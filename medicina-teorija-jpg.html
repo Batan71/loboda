@@ -196,86 +196,50 @@
     prikaziStranicu(parseInt(mojSlider.value) - 1);
   });
 
- // Globalna promenljiva koja pamti gde je korisnik poslednji put pomerio miš
-let aktivnaStrana = "leva";
+// Pamti poziciju miša (leva ili desna strana ekrana)
+let zonaMiša = "leva";
 document.getElementById('book-container').addEventListener('mousemove', function(e) {
     const sirinaKontejnera = this.getBoundingClientRect().width;
-    // Ako je kursor prešao polovinu ekrana udesno, aktivna je desna strana, inače leva
-    if (e.clientX > sirinaKontejnera / 2) { aktivnaStrana = "desna"; } else { aktivnaStrana = "leva"; }
+    if (e.clientX > sirinaKontejnera / 2) { zonaMiša = "desna"; } else { zonaMiša = "leva"; }
 });
 
+// STABILNO REŠENJE BROJ 2: Uveličavanje samo one strane preko koje je miš!
 document.getElementById('book-container').addEventListener('wheel', function(e) {
     e.preventDefault();
-    if (e.deltaY < 0) { trenutnaSkala += 0.1; } else { trenutnaSkala -= 0.1; }
-    trenutnaSkala = Math.max(1, Math.min(4, trenutnaSkala));
+    if (e.deltaY < 0) { trenutnaSkala += 0.08; } else { trenutnaSkala -= 0.08; }
+    trenutnaSkala = Math.max(1, Math.min(3, trenutnaSkala)); // Maksimalni stabilni zum fiksiran na 3x
 
-    const wrapper = document.querySelector(".book-wrapper");
-    const slikaDesna = document.getElementById('book-page-right');
     const slikaLeva = document.getElementById('book-page-left');
+    const slikaDesna = document.getElementById('book-page-right');
 
-    // INTELIGENTNI ZAKON: Ako je zum preko 1.5x, ostaje samo ona strana koju čitaš, druga nestaje!
-    if (trenutnaSkala >= 1.5) {
-        if (!isMobile) {
-            if (aktivnaStrana === "desna") {
-                slikaLeva.style.display = "none";
-                slikaDesna.style.display = "block";
-                slikaDesna.style.maxWidth = "100%";
-                slikaDesna.style.width = "auto";
-            } else {
-                slikaDesna.style.display = "none";
-                slikaLeva.style.display = "block";
-                slikaLeva.style.maxWidth = "100%";
-                slikaLeva.style.width = "auto";
-            }
-        }
-        wrapper.style.transform = `scale(${trenutnaSkala})`;
-        wrapper.style.cursor = "move";
+    if (zonaMiša === "desna") {
+        // Desna se uveličava i automatski izbija u prvi plan, leva miruje
+        slikaDesna.style.transform = `scale(${trenutnaSkala})`;
+        slikaDesna.style.zIndex = "999";
+        slikaDesna.style.position = "relative";
+        
+        // Leva se vraća u normalu i ide u pozadinu
+        slikaLeva.style.transform = "scale(1)";
+        slikaLeva.style.zIndex = "1";
     } else {
-        // Vraćanje obe stranice u savršenu paralenu simetriju kada se zum spusti
-        if (!isMobile) {
-            slikaLeva.style.display = "block";
-            slikaDesna.style.display = "block";
-            slikaLeva.style.maxWidth = "48%";
-            slikaDesna.style.maxWidth = "48%";
-        }
-        wrapper.style.transform = `scale(1)`;
-        wrapper.style.cursor = "default";
-        wrapper.style.left = "0px";
-        wrapper.style.top = "0px";
+        // Leva se uveličava i izbija na površinu, desna miruje
+        slikaLeva.style.transform = `scale(${trenutnaSkala})`;
+        slikaLeva.style.zIndex = "999";
+        slikaLeva.style.position = "relative";
+        
+        // Desna se vraća u normalu i ide u pozadinu
+        slikaDesna.style.transform = "scale(1)";
+        slikaDesna.style.zIndex = "1";
+    }
+    
+    // Ako se zum vrati na početak, obe slike se resetuju u savršenu simetriju
+    if (trenutnaSkala === 1) {
+        slikaLeva.style.zIndex = "1";
+        slikaDesna.style.zIndex = "1";
     }
 });
 
-// POGON ZA SLOBODNO POMERA JELIKE MIŠEM (GOOGLE MAPS EFEKAT)
-let isDragging = false;
-let startX, startY, origLeft, origTop;
-const kontejnerKnjige = document.getElementById('book-container');
-const wrapperKnjige = document.querySelector(".book-wrapper");
-
-kontejnerKnjige.addEventListener('mousedown', function(e) {
-    if (trenutnaSkala >= 1.5) {
-        isDragging = true;
-        startX = e.clientX;
-        startY = e.clientY;
-        origLeft = parseInt(wrapperKnjige.style.left) || 0;
-        origTop = parseInt(wrapperKnjige.style.top) || 0;
-        e.preventDefault();
-    }
-});
-
-window.addEventListener('mousemove', function(e) {
-    if (isDragging) {
-        let dx = e.clientX - startX;
-        let dy = e.clientY - startY;
-        wrapperKnjige.style.position = "relative";
-        wrapperKnjige.style.left = (origLeft + dx) + "px";
-        wrapperKnjige.style.top = (origTop + dy) + "px";
-    }
-});
-
-window.addEventListener('mouseup', function() {
-    isDragging = false;
-});
-
+  
   setupSwipeGestures();
  }
 
