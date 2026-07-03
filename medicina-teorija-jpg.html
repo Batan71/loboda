@@ -197,11 +197,65 @@
   });
 
   document.getElementById('book-container').addEventListener('wheel', function(e) {
-e.preventDefault();
-if (e.deltaY < 0) { trenutnaSkala += 0.08; } else { trenutnaSkala -= 0.08; }
-trenutnaSkala = Math.max(1, Math.min(4, trenutnaSkala)); // Minimalni zum vraćen na stabilnih 1x
-// TVOJ ZAKON: Uveličava se kompletan kontejner, stranice ostaju u savršenoj paralelnoj simetriji!
-document.querySelector(".book-wrapper").style.transform = `scale(${trenutnaSkala})`;
+    e.preventDefault();
+    if (e.deltaY < 0) { trenutnaSkala += 0.1; } else { trenutnaSkala -= 0.1; }
+    trenutnaSkala = Math.max(1, Math.min(4, trenutnaSkala));
+
+    const wrapper = document.querySelector(".book-wrapper");
+    const slikaDesna = document.getElementById('book-page-right');
+    const slikaLeva = document.getElementById('book-page-left');
+
+    // ТВОЈ НОВИ ЗАКОН: Ако је зум преко 1.5x, десна страна нестаје, лева заузима фулл простор!
+    if (trenutnaSkala >= 1.5) {
+        if (!isMobile) {
+            slikaDesna.style.display = "none";
+            slikaLeva.style.maxWidth = "100%";
+            slikaLeva.style.width = "auto";
+        }
+        wrapper.style.transform = `scale(${trenutnaSkala})`;
+        wrapper.style.cursor = "move"; // Мења курсор у шаку за померање
+    } else {
+        // Када се зум спусти, враћају се обе стране у савршену паралелну симетрију
+        if (!isMobile) {
+            slikaDesna.style.display = "block";
+            slikaLeva.style.maxWidth = "48%";
+        }
+        wrapper.style.transform = `scale(1)`;
+        wrapper.style.cursor = "default";
+        wrapper.style.left = "0px";
+        wrapper.style.top = "0px";
+    }
+});
+
+// МОЋАН ПОГОН ЗА СЛОБОДНО ПОМЕРАЊЕ СЛИКЕ МИШЕМ (GOOGLE MAPS ЕФЕКАТ)
+let isDragging = false;
+let startX, startY, origLeft, origTop;
+const kontejnerKnjige = document.getElementById('book-container');
+const wrapperKnjige = document.querySelector(".book-wrapper");
+
+kontejnerKnjige.addEventListener('mousedown', function(e) {
+    if (trenutnaSkala >= 1.5) {
+        isDragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        origLeft = parseInt(wrapperKnjige.style.left) || 0;
+        origTop = parseInt(wrapperKnjige.style.top) || 0;
+        e.preventDefault();
+    }
+});
+
+window.addEventListener('mousemove', function(e) {
+    if (isDragging) {
+        let dx = e.clientX - startX;
+        let dy = e.clientY - startY;
+        wrapperKnjige.style.position = "relative";
+        wrapperKnjige.style.left = (origLeft + dx) + "px";
+        wrapperKnjige.style.top = (origTop + dy) + "px";
+    }
+});
+
+window.addEventListener('mouseup', function() {
+    isDragging = false;
 });
 
   setupSwipeGestures();
