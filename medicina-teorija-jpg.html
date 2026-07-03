@@ -196,50 +196,14 @@
     prikaziStranicu(parseInt(mojSlider.value) - 1);
   });
 
-// Pamti poziciju miša (leva ili desna strana ekrana)
-let zonaMiša = "leva";
-document.getElementById('book-container').addEventListener('mousemove', function(e) {
-    const sirinaKontejnera = this.getBoundingClientRect().width;
-    if (e.clientX > sirinaKontejnera / 2) { zonaMiša = "desna"; } else { zonaMiša = "leva"; }
-});
-
-// STABILNO REŠENJE BROJ 2: Uveličavanje samo one strane preko koje je miš!
 document.getElementById('book-container').addEventListener('wheel', function(e) {
-    e.preventDefault();
-    if (e.deltaY < 0) { trenutnaSkala += 0.08; } else { trenutnaSkala -= 0.08; }
-    trenutnaSkala = Math.max(1, Math.min(3, trenutnaSkala)); // Maksimalni stabilni zum fiksiran na 3x
-
-    const slikaLeva = document.getElementById('book-page-left');
-    const slikaDesna = document.getElementById('book-page-right');
-
-    if (zonaMiša === "desna") {
-        // Desna se uveličava i automatski izbija u prvi plan, leva miruje
-        slikaDesna.style.transform = `scale(${trenutnaSkala})`;
-        slikaDesna.style.zIndex = "999";
-        slikaDesna.style.position = "relative";
-        
-        // Leva se vraća u normalu i ide u pozadinu
-        slikaLeva.style.transform = "scale(1)";
-        slikaLeva.style.zIndex = "1";
-    } else {
-        // Leva se uveličava i izbija na površinu, desna miruje
-        slikaLeva.style.transform = `scale(${trenutnaSkala})`;
-        slikaLeva.style.zIndex = "999";
-        slikaLeva.style.position = "relative";
-        
-        // Desna se vraća u normalu i ide u pozadinu
-        slikaDesna.style.transform = "scale(1)";
-        slikaDesna.style.zIndex = "1";
-    }
-    
-    // Ako se zum vrati na početak, obe slike se resetuju u savršenu simetriju
-    if (trenutnaSkala === 1) {
-        slikaLeva.style.zIndex = "1";
-        slikaDesna.style.zIndex = "1";
-    }
+e.preventDefault();
+if (e.deltaY < 0) { trenutnaSkala += 0.08; } else { trenutnaSkala -= 0.08; }
+trenutnaSkala = Math.max(1, Math.min(4, trenutnaSkala)); // Minimalni zum vraćen na stabilnih 1x
+// TVOJ ZAKON: Uveličava se kompletan kontejner, stranice ostaju u savršenoj paralelnoj simetriji!
+document.querySelector(".book-wrapper").style.transform = `scale(${trenutnaSkala})`;
 });
-
-  
+ 
   setupSwipeGestures();
  }
 
