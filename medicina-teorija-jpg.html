@@ -199,29 +199,23 @@
 document.getElementById('book-container').addEventListener('wheel', function(e) {
     e.preventDefault();
     if (e.deltaY < 0) { trenutnaSkala += 0.05; } else { trenutnaSkala -= 0.05; }
-    trenutnaSkala = Math.max(1, Math.min(2.5, trenutnaSkala)); // Fiksiran maksimalni zum na stabilnih 2.5x
+    trenutnaSkala = Math.max(1, Math.min(2.5, trenutnaSkala)); // Fiksiran maksimalni stabilni zum na 2.5x
 
     const slikaLeva = document.getElementById('book-page-left');
     const slikaDesna = document.getElementById('book-page-right');
 
-    // GVOZDENI ZAKON: Slike se uveličavaju u mestu, ali im dodajemo automatski razmak (marginu) da se nikada ne preklope!
     if (trenutnaSkala > 1) {
-        slikaLeva.style.transform = `scale(${trenutnaSkala})`;
-        slikaDesna.style.transform = `scale(${trenutnaSkala})`;
+        // HIRURŠKI RAZMAK: Levu sliku pomeramo ulevo (-80px), desnu udesno (+80px) i uveličavamo ih!
+        slikaLeva.style.transform = `scale(${trenutnaSkala}) translateX(-80px)`;
+        slikaDesna.style.transform = `scale(${trenutnaSkala}) translateX(80px)`;
         
-        // Nasilno razdvajanje strana u prostoru - leva ide levo, desna desno
-        slikaLeva.style.marginRight = "30px";
-        slikaDesna.style.marginLeft = "30px";
-        
-        // Izjednačavamo slojeve da niko nikog ne guta
+        // Izjednačavamo slojeve da niko nikog ne guta u prostoru
         slikaLeva.style.zIndex = "10";
         slikaDesna.style.zIndex = "10";
     } else {
-        // Potpuni reset u fabričku simetriju kada se zum vrati na 1x
-        slikaLeva.style.transform = "scale(1)";
-        slikaDesna.style.transform = "scale(1)";
-        slikaLeva.style.marginRight = "0px";
-        slikaDesna.style.marginLeft = "0px";
+        // Potpuni reset u fabričku simetriju kada je zum na 1x
+        slikaLeva.style.transform = "scale(1) translateX(0px)";
+        slikaDesna.style.transform = "scale(1) translateX(0px)";
         slikaLeva.style.zIndex = "1";
         slikaDesna.style.zIndex = "1";
     }
