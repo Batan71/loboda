@@ -52,10 +52,19 @@
  .t-left { left: 0; }
  .t-right { left: 50%; }
 
- /* FIX ZA PARALELNE STRANICE: Zadržavaju visinu, širina je odvojena na 48% i nema preklapanja */
- @media (min-width: 769px) {
-   .book-page-img { width: auto; height: calc(100vh - 85px); max-width: 48%; object-fit: contain; }
- }
+/* FIX ZA PARALELNE STRANICE: SPREČAVANJE PREKLAPANJA STRANA PRILIKOM ZUMA */
+@media (min-width: 769px) {
+.book-page-img { 
+width: auto; 
+height: calc(100vh - 85px); 
+max-width: 48%; 
+object-fit: contain; 
+position: relative; /* Izoluje sliku u njenoj sopstvenoj geometrijskoj kocki */
+z-index: 1; /* Izjednačava slojeve u prostoru */
+}
+/* Kada uveličavaš levu stranu i čitaš je, kursor miša je nasilno podiže iznad desne */
+#book-page-left:hover { z-index: 999 !important; }
+}
 
  /* REŽIM ZA TELEFONE */
  @media (max-width: 768px) {
