@@ -196,7 +196,15 @@
     prikaziStranicu(parseInt(mojSlider.value) - 1);
   });
 
-  document.getElementById('book-container').addEventListener('wheel', function(e) {
+  // Globalna promenljiva koja pamti gde je korisnik poslednji put pomerio miš
+let aktivnaStrana = "leva";
+document.getElementById('book-container').addEventListener('mousemove', function(e) {
+    const sirinaKontejnera = this.getBoundingClientRect().width;
+    // Ako je kursor prešao polovinu ekrana udesno, aktivna je desna strana, inače leva
+    if (e.clientX > sirinaKontejnera / 2) { aktivnaStrana = "desna"; } else { aktivnaStrana = "leva"; }
+});
+
+document.getElementById('book-container').addEventListener('wheel', function(e) {
     e.preventDefault();
     if (e.deltaY < 0) { trenutnaSkala += 0.1; } else { trenutnaSkala -= 0.1; }
     trenutnaSkala = Math.max(1, Math.min(4, trenutnaSkala));
@@ -205,20 +213,30 @@
     const slikaDesna = document.getElementById('book-page-right');
     const slikaLeva = document.getElementById('book-page-left');
 
-    // ТВОЈ НОВИ ЗАКОН: Ако је зум преко 1.5x, десна страна нестаје, лева заузима фулл простор!
+    // INTELIGENTNI ZAKON: Ako je zum preko 1.5x, ostaje samo ona strana koju čitaš, druga nestaje!
     if (trenutnaSkala >= 1.5) {
         if (!isMobile) {
-            slikaDesna.style.display = "none";
-            slikaLeva.style.maxWidth = "100%";
-            slikaLeva.style.width = "auto";
+            if (aktivnaStrana === "desna") {
+                slikaLeva.style.display = "none";
+                slikaDesna.style.display = "block";
+                slikaDesna.style.maxWidth = "100%";
+                slikaDesna.style.width = "auto";
+            } else {
+                slikaDesna.style.display = "none";
+                slikaLeva.style.display = "block";
+                slikaLeva.style.maxWidth = "100%";
+                slikaLeva.style.width = "auto";
+            }
         }
         wrapper.style.transform = `scale(${trenutnaSkala})`;
-        wrapper.style.cursor = "move"; // Мења курсор у шаку за померање
+        wrapper.style.cursor = "move";
     } else {
-        // Када се зум спусти, враћају се обе стране у савршену паралелну симетрију
+        // Vraćanje obe stranice u savršenu paralenu simetriju kada se zum spusti
         if (!isMobile) {
+            slikaLeva.style.display = "block";
             slikaDesna.style.display = "block";
             slikaLeva.style.maxWidth = "48%";
+            slikaDesna.style.maxWidth = "48%";
         }
         wrapper.style.transform = `scale(1)`;
         wrapper.style.cursor = "default";
@@ -227,7 +245,7 @@
     }
 });
 
-// МОЋАН ПОГОН ЗА СЛОБОДНО ПОМЕРАЊЕ СЛИКЕ МИШЕМ (GOOGLE MAPS ЕФЕКАТ)
+// POGON ZA SLOBODNO POMERA JELIKE MIŠEM (GOOGLE MAPS EFEKAT)
 let isDragging = false;
 let startX, startY, origLeft, origTop;
 const kontejnerKnjige = document.getElementById('book-container');
