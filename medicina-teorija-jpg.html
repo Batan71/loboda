@@ -197,13 +197,36 @@
   });
 
 document.getElementById('book-container').addEventListener('wheel', function(e) {
-e.preventDefault();
-if (e.deltaY < 0) { trenutnaSkala += 0.08; } else { trenutnaSkala -= 0.08; }
-trenutnaSkala = Math.max(1, Math.min(4, trenutnaSkala)); // Minimalni zum vraćen na stabilnih 1x
-// TVOJ ZAKON: Uveličava se kompletan kontejner, stranice ostaju u savršenoj paralelnoj simetriji!
-document.querySelector(".book-wrapper").style.transform = `scale(${trenutnaSkala})`;
+    e.preventDefault();
+    if (e.deltaY < 0) { trenutnaSkala += 0.05; } else { trenutnaSkala -= 0.05; }
+    trenutnaSkala = Math.max(1, Math.min(2.5, trenutnaSkala)); // Fiksiran maksimalni zum na stabilnih 2.5x
+
+    const slikaLeva = document.getElementById('book-page-left');
+    const slikaDesna = document.getElementById('book-page-right');
+
+    // GVOZDENI ZAKON: Slike se uveličavaju u mestu, ali im dodajemo automatski razmak (marginu) da se nikada ne preklope!
+    if (trenutnaSkala > 1) {
+        slikaLeva.style.transform = `scale(${trenutnaSkala})`;
+        slikaDesna.style.transform = `scale(${trenutnaSkala})`;
+        
+        // Nasilno razdvajanje strana u prostoru - leva ide levo, desna desno
+        slikaLeva.style.marginRight = "30px";
+        slikaDesna.style.marginLeft = "30px";
+        
+        // Izjednačavamo slojeve da niko nikog ne guta
+        slikaLeva.style.zIndex = "10";
+        slikaDesna.style.zIndex = "10";
+    } else {
+        // Potpuni reset u fabričku simetriju kada se zum vrati na 1x
+        slikaLeva.style.transform = "scale(1)";
+        slikaDesna.style.transform = "scale(1)";
+        slikaLeva.style.marginRight = "0px";
+        slikaDesna.style.marginLeft = "0px";
+        slikaLeva.style.zIndex = "1";
+        slikaDesna.style.zIndex = "1";
+    }
 });
- 
+
   setupSwipeGestures();
  }
 
