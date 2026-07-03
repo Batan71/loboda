@@ -23,7 +23,7 @@
  
  /* Glavni prozor čitača */
  #book-viewer-zone { 
-  display: flex; width: 100vw; height: 100vh; 
+  display: none; width: 100vw; height: 100vh; 
   position: fixed; top: 0; left: 0; z-index: 9999; 
   flex-direction: column; background-color: #020617;
  }
@@ -89,6 +89,15 @@
 </head>
 <body oncontextmenu="return false;" onselectstart="return false;" ondragstart="return false;">
 
+ <!-- KAPIJA ZA ŠIFRU -->
+ <div class="lock-container" id="lock-screen">
+ <h2 style="color: #38bdf8; margin-bottom: 20px; font-size: 1.2em;">🔒 REDOKS JURIŠ</h2>
+ <input type="password" id="redox-pass" placeholder="UNESITE ŠIFRU">
+ <br>
+ <button class="btn-submit" onclick="verifyRedoxVault()">Pristupi</button>
+ <div class="error-msg" id="error-box">🛑 KOD NIJE ISPRAVAN!</div>
+ </div>
+
  <!-- GLAVNI INTERFEJS -->
  <div id="book-viewer-zone">
  <div class="viewer-header">
@@ -137,13 +146,26 @@
  var slikaDesna = document.getElementById('book-page-right');
  var mojSlider = document.getElementById('page-slider');
 
-mojSlider.max = UKUPAN_BROJ_STRANICA;
-prikaziStranicu(0);
-pokreniKontrole();
-}
-function prikaziStranicu (indeks) {
-trenutniIndeks = indeks;
-isMobile = window.innerWidth <= 768;
+ function verifyRedoxVault() {
+  var inputPass = document.getElementById("redox-pass").value.trim();
+  var errorBox = document.getElementById("error-box");
+  
+  if (inputPass === "REDOX2026") {
+   document.getElementById("lock-screen").style.display = "none";
+   document.getElementById("book-viewer-zone").style.display = "flex";
+   errorBox.style.display = "none";
+   
+   mojSlider.max = UKUPAN_BROJ_STRANICA;
+   prikaziStranicu(0);
+   pokreniKontrole();
+  } else {
+   errorBox.style.display = "block";
+  }
+ }
+
+ function prikaziStranicu(indeks) {
+  trenutniIndeks = indeks;
+  isMobile = window.innerWidth <= 768;
 
   if (isMobile) {
     slikaLeva.src = sveStranice[Math.max(0, Math.min(sveStranice.length - 1, indeks))];
@@ -194,8 +216,8 @@ isMobile = window.innerWidth <= 768;
     e.preventDefault();
     if (e.deltaY < 0) { trenutnaSkala += 0.08; } else { trenutnaSkala -= 0.08; }
     trenutnaSkala = Math.max(0.8, Math.min(4, trenutnaSkala));
-slikaLeva.style.transform = `scale(${trenutnaSkala})`;
-slikaDesna.style.transform = `scale(${trenutnaSkala})`;
+    slikaLeva.style.transform = `scale(${trenutnaSkala})`;
+    slikaDesna.style.transform = `scale(${trenutnaSkala})`;
   });
 
   setupSwipeGestures();
@@ -250,6 +272,10 @@ slikaDesna.style.transform = `scale(${trenutnaSkala})`;
  document.addEventListener('keydown', e => {
   if (e.key === "ArrowRight") okreniDesno();
   if (e.key === "ArrowLeft") okreniLevo();
+ });
+
+ document.getElementById("redox-pass").addEventListener("keyup", function(event) {
+  if (event.key === "Enter") verifyRedoxVault();
  });
  
  // DODATAK ZA ISTINSKO HORIZONTALNO LISTANJE PRSTOM NA TELEFONIMA
