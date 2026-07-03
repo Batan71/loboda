@@ -244,27 +244,28 @@ Podelite sajt autora prijateljima.
 <span>Farmako recept / Tajne dugovečnosti</span>
    </a>
 
-<!-- DUGME 5: REDOKS JURIŠ + PRAKTIKUM (KAPIJA SA JEDNIM KATANCEM - POPRAVLJENO) -->
-<div class="btn" style="border-color: #d4af37; cursor: pointer;" onclick="otvoriMasonskuKapiju()">
+<!-- DUGME 5: REDOKS JURIŠ + PRAKTIKUM (KAPIJA SA JEDNIM KATANCEM - ČISTO) -->
+<div class="btn" style="border-color: #d4af37; cursor: pointer;" onclick="otvoriSigurnosniProzor()">
 <div class="btn-title" style="color: #d4af37;">REDOKS JURIŠ (Cela knjiga PDF) + PRAKTIKUM REDOKS JURIŠ</div>
 <span>Ekskluzivna sigurna zona: Pristup bazi znanja i kućnim recepturama za regeneraciju ćelija.</span>
 </div>
 
-<!-- MASONSKA KAPIJA SA SAMO JEDNIM KATANCEM ZA PRAKTIKUM -->
-<div id="masonska-kapija" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15,23,42,0.98); z-index:99999; flex-direction:column; justify-content:center; align-items:center; font-family:sans-serif; color:#fff; -webkit-user-select:none; user-select:none;" oncontextmenu="return false;">
+<!-- DVOSTRUKI SIGURNOSNI PROZOR SA DVA POTPUNO IDENTIČNA KATANCA - POPRAVLJENA NAVIGACIJA -->
+<div id="sigurnosni-prozor" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15,23,42,0.98); z-index:99999; flex-direction:column; justify-content:center; align-items:center; font-family:sans-serif; color:#fff; -webkit-user-select:none; user-select:none;" oncontextmenu="return false;">
     
     <div style="text-align:right; width:90%; max-width:400px; margin-bottom:20px;">
-        <button onclick="zatvoriMasonskuKapiju()" style="background:none; border:none; color:#ff007f; font-size:24px; cursor:pointer; font-weight:bold;">✕ nazad na portal</button>
+        <button onclick="zatvoriSigurnosniProzor()" style="background:none; border:none; color:#ff007f; font-size:24px; cursor:pointer; font-weight:bold;">✕ nazad na portal</button>
     </div>
 
-    <!-- PROZOR 1: ČISTO OTKLJUČANO DUGME ZA KNJIGU (IDE DIREKTNO NA TVOJ FABRIČKI KATANAC) -->
+    <!-- KATANAC 1: REDOKS JURIŠ (CELA KNJIGA) -->
     <div style="background:#1e293b; border:2px solid #d4af37; padding:25px; border-radius:12px; text-align:center; width:90%; max-width:400px; margin-bottom:25px; box-shadow:0 10px 25px rgba(0,0,0,0.5);">
-        <h3 style="color:#d4af37; font-size:1.1rem; margin-bottom:15px;">📖 REDOKS JURIŠ (Cela knjiga)</h3>
-        <p style="font-size:13px; color:#cbd5e1; margin-bottom:12px;">Otvorite stabilni zvanični PDF čitač prve knjige.</p>
-        <button onclick="window.location.href='knjiga-celaPDF-telefoni.html'" style="padding:10px 25px; background:#d4af37; color:#000; border:none; font-weight:bold; border-radius:4px; cursor:pointer; font-size:14px;">OTVORI KNJIGU</button>
+        <h3 style="color:#d4af37; font-size:1.1rem; margin-bottom:15px;">🔒 REDOKS JURIŠ (Cela knjiga)</h3>
+        <input type="password" id="sifra-knjiga-input" placeholder="UNESITE ŠIFRU KNJIGE" style="padding:10px; width:80%; font-size:14px; text-align:center; background:#0f172a; border:1px solid #334155; color:#fff; border-radius:4px;">
+        <br>
+        <button onclick="proveriSifruKnjige()" style="margin-top:12px; padding:8px 20px; background:#d4af37; color:#000; border:none; font-weight:bold; border-radius:4px; cursor:pointer;">PRISTUPI</button>
     </div>
 
-    <!-- PROZOR 2: JEDINI I VRHOVNI KATANAC ZA PRAKTIKUM REDOKS JURIŠ -->
+    <!-- KATANAC 2: PRAKTIKUM REDOKS JURIŠ -->
     <div style="background:#1e293b; border:2px solid #00ffcc; padding:25px; border-radius:12px; text-align:center; width:90%; max-width:400px; box-shadow:0 10px 25px rgba(0,0,0,0.5);">
         <h3 style="color:#00ffcc; font-size:1.1rem; margin-bottom:15px;">🔒 PRAKTIKUM REDOKS JURIŠ</h3>
         <input type="password" id="sifra-praktikum-input" placeholder="UNESITE ŠIFRU PRAKTIKUMA" style="padding:10px; width:80%; font-size:14px; text-align:center; background:#0f172a; border:1px solid #334155; color:#fff; border-radius:4px;">
@@ -273,7 +274,7 @@ Podelite sajt autora prijateljima.
     </div>
 </div>
 
-<!-- REAKTOR ZA AUTOMATSKO LISTANJE PRAKTIKUMA (BEZ SMETNJI ODOZGO) -->
+<!-- REAKTOR ZA AUTOMATSKO LISTANJE PRAKTIKUMA -->
 <div id="praktikum-slike-kontejner" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#111; z-index:100000; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:20px 0; -webkit-user-select:none; user-select:none;" oncontextmenu="return false;">
     <div id="slike-inner-pogon" style="max-width:800px; margin:auto; display:flex; flex-direction:column; align-items:center; width:90%;"></div>
     <div style="text-align:center; margin-top:30px; margin-bottom:40px;">
@@ -282,14 +283,39 @@ Podelite sajt autora prijateljima.
 </div>
 
 <script>
-function otvoriMasonskuKapiju() { document.getElementById('masonska-kapija').style.display = 'flex'; }
-function zatvoriMasonskuKapiju() { document.getElementById('masonska-kapija').style.display = 'none'; }
-function zatvoriSlikePraktikuma() { document.getElementById('praktikum-slike-kontejner').style.display = 'none'; document.getElementById('slike-inner-pogon').innerHTML = ''; window.scrollTo(0,0); }
+function otvoriSigurnosniProzor() {
+    document.getElementById('sigurnosni-prozor').style.display = 'flex';
+    history.pushState({page: 'kapija'}, '');
+}
+
+function zatvoriSigurnosniProzor() {
+    document.getElementById('sigurnosni-prozor').style.display = 'none';
+}
+
+function zatvoriSlikePraktikuma() {
+    document.getElementById('praktikum-slike-kontejner').style.display = 'none';
+    document.getElementById('slike-inner-pogon').innerHTML = '';
+    window.scrollTo(0,0);
+}
+
+// GVOZDENO REŠENJE ZA LEVU STRELICU: Ako korisnik klikne "nazad" u pretraživaču, zatvaramo prozor bez izbacivanja sa sajta!
+window.onpopstate = function(event) {
+    zatvoriSigurnosniProzor();
+    zatvoriSlikePraktikuma();
+};
+
+function proveriSifruKnjige() {
+    const kod = document.getElementById('sifra-knjiga-input').value;
+    if(kod === 'REDOX2026') {
+        zatvoriSigurnosniProzor();
+        window.location.href = 'knjiga-celaPDF-telefoni.html';
+    } else { alert('NEOVLAŠĆEN PRISTUP!'); }
+}
 
 function proveriSifruPraktikuma() {
     const kod = document.getElementById('sifra-praktikum-input').value;
     if(kod === 'REDOX2026') {
-        zatvoriMasonskuKapiju();
+        zatvoriSigurnosniProzor();
         document.getElementById('praktikum-slike-kontejner').style.display = 'block';
         const pogon = document.getElementById('slike-inner-pogon');
         pogon.innerHTML = '';
@@ -299,17 +325,12 @@ function proveriSifruPraktikuma() {
             const img = document.createElement('img');
             let formatBroja = i < 10 ? '0' + i : i;
             img.src = `slike-praktikum/knjiga3 (${formatBroja}).jpg`;
-            img.style.width = '100%';
-            img.style.height = 'auto';
-            img.style.marginBottom = '25px';
-            img.style.borderRadius = '6px';
-            img.style.boxShadow = '0 5px 15px rgba(0,0,0,0.5)';
+            img.style.width = '100%'; img.style.height = 'auto'; img.style.marginBottom = '25px';
+            img.style.borderRadius = '6px'; img.style.boxShadow = '0 5px 15px rgba(0,0,0,0.5)';
             img.style.pointerEvents = 'none'; 
             pogon.appendChild(img);
         }
-    } else {
-        alert('NEOVLAŠĆEN PRISTUP: Kôd ne odgovara redoks matrici!');
-    }
+    } else { alert('NEOVLAŠĆEN PRISTUP: Kôd ne odgovara redoks matrici!'); }
 }
 </script>
 
