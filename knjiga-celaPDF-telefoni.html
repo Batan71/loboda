@@ -23,7 +23,7 @@
  
  /* Glavni prozor čitača */
  #book-viewer-zone { 
-  display: none; width: 100vw; height: 100vh; 
+  display: flex; width: 100vw; height: 100vh; 
   position: fixed; top: 0; left: 0; z-index: 9999; 
   flex-direction: column; background-color: #020617;
  }
@@ -89,15 +89,6 @@
 </head>
 <body oncontextmenu="return false;" onselectstart="return false;" ondragstart="return false;">
 
- <!-- KAPIJA ZA ŠIFRU -->
- <div class="lock-container" id="lock-screen">
- <h2 style="color: #38bdf8; margin-bottom: 20px; font-size: 1.2em;">🔒 REDOKS JURIŠ</h2>
- <input type="password" id="redox-pass" placeholder="UNESITE ŠIFRU">
- <br>
- <button class="btn-submit" onclick="verifyRedoxVault()">Pristupi</button>
- <div class="error-msg" id="error-box">🛑 KOD NIJE ISPRAVAN!</div>
- </div>
-
  <!-- GLAVNI INTERFEJS -->
  <div id="book-viewer-zone">
  <div class="viewer-header">
@@ -145,23 +136,6 @@
  var slikaLeva = document.getElementById('book-page-left');
  var slikaDesna = document.getElementById('book-page-right');
  var mojSlider = document.getElementById('page-slider');
-
- function verifyRedoxVault() {
-  var inputPass = document.getElementById("redox-pass").value.trim();
-  var errorBox = document.getElementById("error-box");
-  
-  if (inputPass === "REDOX2026") {
-   document.getElementById("lock-screen").style.display = "none";
-   document.getElementById("book-viewer-zone").style.display = "flex";
-   errorBox.style.display = "none";
-   
-   mojSlider.max = UKUPAN_BROJ_STRANICA;
-   prikaziStranicu(0);
-   pokreniKontrole();
-  } else {
-   errorBox.style.display = "block";
-  }
- }
 
  function prikaziStranicu(indeks) {
   trenutniIndeks = indeks;
