@@ -171,13 +171,25 @@ e.preventDefault();
 mojSlider.addEventListener('input', function() {
 prikaziStranicu (parseInt(mojSlider.value) - 1);
 });
+  
 document.getElementById('book-container').addEventListener('wheel', function(e) {
-e.preventDefault();
-if (e.deltaY < 0) { trenutnaSkala += 0.08; } else { trenutnaSkala -= 0.08; }
-trenutnaSkala = Math.max(0.8, Math.min(4, trenutnaSkala));
-slikaLeva.style.transform = `scale(${trenutnaSkala})`;
-slikaDesna.style.transform = `scale(${trenutnaSkala})`;
+    e.preventDefault();
+    if (e.deltaY < 0) { trenutnaSkala += 0.05; } else { trenutnaSkala -= 0.05; }
+    trenutnaSkala = Math.max(1, Math.min(2.5, trenutnaSkala));
+
+    if (trenutnaSkala > 1) {
+        slikaLeva.style.transform = `scale(${trenutnaSkala}) translateX(-30px)`;
+        slikaDesna.style.transform = `scale(${trenutnaSkala}) translateX(30px)`;
+        slikaLeva.style.zIndex = "10";
+        slikaDesna.style.zIndex = "10";
+    } else {
+        slikaLeva.style.transform = "scale(1) translateX(0px)";
+        slikaDesna.style.transform = "scale(1) translateX(0px)";
+        slikaLeva.style.zIndex = "1";
+        slikaDesna.style.zIndex = "1";
+    }
 });
+  
 setupSwipeGestures();
 }
 
