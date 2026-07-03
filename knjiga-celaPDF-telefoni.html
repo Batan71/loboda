@@ -141,9 +141,9 @@ mojSlider.max = UKUPAN_BROJ_STRANICA;
 prikaziStranicu(0);
 pokreniKontrole();
 
- function prikaziStranicu(indeks) {
-  trenutniIndeks = indeks;
-  isMobile = window.innerWidth <= 768;
+function prikaziStranicu (indeks) {
+trenutniIndeks = indeks;
+isMobile = window.innerWidth <= 768;
 
   if (isMobile) {
     slikaLeva.src = sveStranice[Math.max(0, Math.min(sveStranice.length - 1, indeks))];
@@ -194,8 +194,8 @@ pokreniKontrole();
     e.preventDefault();
     if (e.deltaY < 0) { trenutnaSkala += 0.08; } else { trenutnaSkala -= 0.08; }
     trenutnaSkala = Math.max(0.8, Math.min(4, trenutnaSkala));
-    slikaLeva.style.transform = `scale(${trenutnaSkala})`;
-    slikaDesna.style.transform = `scale(${trenutnaSkala})`;
+slikaLeva.style.transform = `scale(${trenutnaSkala})`;
+slikaDesna.style.transform = `scale(${trenutnaSkala})`;
   });
 
   setupSwipeGestures();
