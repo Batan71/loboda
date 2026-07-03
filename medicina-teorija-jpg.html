@@ -197,12 +197,12 @@
   });
 
   document.getElementById('book-container').addEventListener('wheel', function(e) {
-    e.preventDefault();
-    if (e.deltaY < 0) { trenutnaSkala += 0.08; } else { trenutnaSkala -= 0.08; }
-    trenutnaSkala = Math.max(0.8, Math.min(4, trenutnaSkala));
-    slikaLeva.style.transform = `scale(${trenutnaSkala})`;
-    slikaDesna.style.transform = `scale(${trenutnaSkala})`;
-  });
+e.preventDefault();
+if (e.deltaY < 0) { trenutnaSkala += 0.08; } else { trenutnaSkala -= 0.08; }
+trenutnaSkala = Math.max(1, Math.min(4, trenutnaSkala)); // Minimalni zum vraćen na stabilnih 1x
+// TVOJ ZAKON: Uveličava se kompletan kontejner, stranice ostaju u savršenoj paralelnoj simetriji!
+document.querySelector(".book-wrapper").style.transform = `scale(${trenutnaSkala})`;
+});
 
   setupSwipeGestures();
  }
