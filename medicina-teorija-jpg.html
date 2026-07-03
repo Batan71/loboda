@@ -52,19 +52,28 @@
  .t-left { left: 0; }
  .t-right { left: 50%; }
 
-/* FIX ZA PARALELNE STRANICE: SPREČAVANJE PREKLAPANJA STRANA PRILIKOM ZUMA */
+/* FIX ZA PARALELNE STRANICE: POTPUNO ELIMINISANJE PREKLAPANJA STRANA PRILIKOM ZUMA */
 @media (min-width: 769px) {
+.book-wrapper {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 15px !important;
+    width: 100% !important;
+}
 .book-page-img { 
-width: auto; 
-height: calc(100vh - 85px); 
-max-width: 48%; 
-object-fit: contain; 
-position: relative; /* Izoluje sliku u njenoj sopstvenoj geometrijskoj kocki */
-z-index: 1; /* Izjednačava slojeve u prostoru */
+    width: auto !important; 
+    height: calc(100vh - 85px) !important; 
+    max-width: 48% !important; 
+    object-fit: contain !important; 
+    position: relative !important;
 }
-/* Kada uveličavaš levu stranu i čitaš je, kursor miša je nasilno podiže iznad desne */
-#book-page-left:hover { z-index: 999 !important; }
+/* ČVRSTO RAZDVAJANJE: Leva strana dobija prioritet nad desnom u prostoru */
+#book-page-left { z-index: 10 !important; }
+#book-page-right { z-index: 1 !important; }
 }
+
 
  /* REŽIM ZA TELEFONE */
  @media (max-width: 768px) {
