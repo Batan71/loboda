@@ -123,6 +123,8 @@ display: flex;
 flex-direction: column; /* Preslaže u jednu čistu vertikalnu kolonu */
 gap: 25px;
 }
+.stories-column { order: 1; } /* FORCE: Priče idu na prvo mesto na telefonu */
+.invest-column { order: 2; }  /* FORCE: Donacije idu na poslednje mesto na telefonu */
 .invest-column, .stories-column {
 height: auto;
 max-height: none;
