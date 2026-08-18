@@ -274,24 +274,22 @@ Kapitalna naučna vrednost ovog Protokola leži u činjenici da se ove tri stani
 </div>
 
 <div style="display: flex; justify-content: flex-end; margin-top: 15px; padding-top: 10px;">
- <button onclick="podeliSajt13()" style="background: #00ffcc; color: #000000; padding: 8px 16px; border: none; border-radius: 4px; font-size: 14px; font-family: sans-serif; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px rgba(0, 255, 204, 0.3);">
- 📢 Podeli sa prijateljima
- </button>
-</div>
+  <button onclick="podeliSajt13()" style="background: #00ffcc; color: #000000; padding: 8px 16px; border: none; border-radius: 4px; font-size: 14px; font-family: sans-serif; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px rgba(0, 255, 204, 0.3);">
+   📢 Podeli sa prijateljima
+  </button>
+ </div>
 
-<script>
-function podeliSajt13() {
- if (navigator.share) {
- navigator.share({
- title: 'Protokol Loboda - Priča 13', 
- text: 'Teorijski prikaz terapije kod retinopatije', 
- url: 'https://github.io'
- });
- } else {
- navigator.clipboard.writeText('https://github.io');
- alert("Link ka portalu je kopiran!");
+ <script>
+ function podeliSajt1() {
+  if (navigator.share) {
+   navigator.share({title: 'Protokol Loboda - Priča 13', text: 'Jutarnji ritual i folikularni štit', url: 'https://draganloboda.github.io'});
+  } else {
+   navigator.clipboard.writeText('https://draganloboda.github.io');
+   alert("Link ka portalu je kopiran!");
+  }
  }
-}
+ </script>
+</div> 
 
 // GLOBALNI ZAKLJUČANI CEVOVOD PREKO TVOG ŽIVOG ABACUS SERVERA
 window.addEventListener('DOMContentLoaded', function() {
