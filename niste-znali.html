@@ -274,26 +274,27 @@ Kapitalna naučna vrednost ovog Protokola leži u činjenici da se ove tri stani
 </div>
 
 <div style="display: flex; justify-content: flex-end; margin-top: 15px; padding-top: 10px;">
-  <button onclick="podeliSajt13()" style="background: #00ffcc; color: #000000; padding: 8px 16px; border: none; border-radius: 4px; font-size: 14px; font-family: sans-serif; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px rgba(0, 255, 204, 0.3);">
-   📢 Podeli sa prijateljima
-  </button>
- </div>
+ <button onclick="podeliSajt13()" style="background: #00ffcc; color: #000000; padding: 8px 16px; border: none; border-radius: 4px; font-size: 14px; font-family: sans-serif; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px rgba(0, 255, 204, 0.3);">
+ 📢 Podeli sa prijateljima
+ </button>
+</div>
 
- <script>
- function podeliSajt1() {
-  if (navigator.share) {
-   navigator.share({title: 'Protokol Loboda - Priča 13', text: 'Jutarnji ritual i folikularni štit', url: 'https://draganloboda.github.io'});
-  } else {
-   navigator.clipboard.writeText('https://draganloboda.github.io');
-   alert("Link ka portalu je kopiran!");
-  }
+<script>
+function podeliSajt13() {
+ if (navigator.share) {
+ navigator.share({
+ title: 'Protokol Loboda - Priča 13', 
+ text: 'Teorijski prikaz terapije kod retinopatije', 
+ url: 'https://draganloboda.github.io'
+ });
+ } else {
+ navigator.clipboard.writeText('https://draganloboda.github.io');
+ alert("Link ka portalu je kopiran!");
  }
- </script>
-</div> 
+}
 
 // GLOBALNI ZAKLJUČANI CEVOVOD PREKO TVOG ŽIVOG ABACUS SERVERA
 window.addEventListener('DOMContentLoaded', function() {
- // 1. Povlačenje trenutnog ukupnog stanja lajkova bez uvećanja broja klikom (samo učitavanje)
  fetch('https://jasoncameron.dev')
  .then(function(res) { return res.json(); })
  .then(function(data) {
@@ -304,7 +305,6 @@ window.addEventListener('DOMContentLoaded', function() {
  document.getElementById('likeCount13').innerText = "0";
  });
 
- // 2. Provera lokalnog statusa da li je ovaj specifični aparat već lajkovao
  var status = localStorage.getItem('status_lajka_prica13');
  if(status === 'lajkovano') {
  stabilizujZelenoDugme();
@@ -315,7 +315,6 @@ function lajkujPricu13() {
  var status = localStorage.getItem('status_lajka_prica13');
  
  if (status !== 'lajkovano') {
- // JURIŠ NA TVOJU STRANU MREŽE: Uvećaj globalni brojač lajkova za +1
  fetch('https://jasoncameron.dev')
  .then(function(res) { return res.json(); })
  .then(function(data) {
@@ -340,6 +339,7 @@ function stabilizujZelenoDugme() {
 }
 </script>
 </div>
+
 
  <!-- VANREDNA PRIČA 12: ANTITUMORSKI EFEKAT JODA I LIPIDNI BILANS -->
 <div class="podfascikla">
