@@ -266,91 +266,146 @@ Kapitalna naučna vrednost ovog Protokola leži u činjenici da se ove tri stani
  <span class="mat">🧬 NISTE ZNALI DA: Svesnim podeljenim unosem sirovog žumancetnog jezgra, monosaharidnog šatla domaćeg meda, L-Tirozina i minimalnih kapi Lugola kroz tri dnevne stanice bez kapi vode, vi direktno varate krvno-retinalnu barijeru oka i upumpavate krunske anti-age materije (Lutein, Holin, Tirozin i Jod) pravo u mrežnjaču! Ovaj Protokol uspešno gasi unutrašnje ROS požare, reaktivira rad očnih mitohondrija na fabričkih −180 mV i maksimalno usporava genetske distrofije, dok zdravom i oštećenom vidu obezbeđuje trajnu oštrinu, dubinsku hidrataciju kapilara i stanje apsolutnog, hladnog i tiho ugašenog mira!</span>
 </p>
 
-<!-- PREKIDAČ ZA GLOBALNE STVARNE LAJKOVE (ABACUS API ŠATL - VERZIJA V6 KONAČNA) -->
-<div style="display: flex; gap: 15px; justify-content: flex-end; margin-top: 15px; padding-top: 10px; border-top: 1px solid #1e293b;">
- <button id="likeBtn13" onclick="lajkujPricu13()" style="background: #1e293b; color: #cbd5e1; padding: 8px 16px; border: 2px solid #ff007f; border-radius: 4px; font-size: 14px; font-family: sans-serif; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 0 10px rgba(255, 0, 127, 0.1);">
+<!-- GLOBALNI LAJK – ABACUS -->
+<div style="display:flex;gap:15px;justify-content:flex-end; margin-top:15px;padding-top:10px; border-top:1px solid #1e293b;">
+ <button id="likeBtn13" type="button" onclick="lajukjPricu13()" style="background:#1e293b;color:#cbd5e1; padding:8px 16px;border:2px solid #ff007f; border-radius:4px;font-size:14px; font-family:sans-serif;font-weight:bold; cursor:pointer;transition:all .3s ease; box-shadow:0 0 10px rgba(255,0,127,.1);">
  ❤️ Lajkuj priču (<span id="likeCount13">0</span>)
  </button>
 </div>
 
-<div style="display: flex; justify-content: flex-end; margin-top: 15px; padding-top: 10px;">
- <button onclick="podeliSajt13()" style="background: #00ffcc; color: #000000; padding: 8px 16px; border: none; border-radius: 4px; font-size: 14px; font-family: sans-serif; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px rgba(0, 255, 204, 0.3);">
+<div style="display:flex;justify-content:flex-end;margin-top:15px;">
+ <button type="button" onclick="podeliSajt13()" style="background:#00ffcc;color:#000; padding:8px 16px;border:none; border-radius:4px;font-size:14px; font-family:sans-serif;font-weight:bold; cursor:pointer; box-shadow:0 0 10px rgba(0,255,204,.3);">
  📢 Podeli sa prijateljima
  </button>
 </div>
 
 <script>
-function podeliSajt13() {
- if (navigator.share) {
-  navigator.share({
-   title: 'Protokol Loboda - Priča 13', 
-   text: 'Teorijski prikaz terapije kod retinopatije', 
-   url: 'https://draganloboda.github.io'
-  });
- } else {
-  navigator.clipboard.writeText('https://draganloboda.github.io');
-  alert("Link ka portalu je kopiran!");
- }
+/* =========================================================
+ ABACUS PODEŠAVANJE SA STVARNIM ENDPOINTIMA AUTORA
+ ========================================================= */
+const ABACUS_GET = 'https://jasoncameron.dev';
+const ABACUS_HIT = 'https://jasoncameron.dev';
+
+/* Jedan jedini localStorage ključ */
+const LIKE_STORAGE_KEY = 'prica13_lajkovan';
+
+/* =========================================================
+ PODEŠAVANJE DUGMETA
+ ========================================================= */
+function stabilizujZelenoDugme() {
+ const btn = document.getElementById('likeBtn13');
+ if (!btn) return;
+ btn.style.background = '#00ffcc';
+ btn.style.color = '#000000';
+ btn.style.borderColor = '#00ffcc';
+ btn.style.boxShadow = '0 0 15px rgba(0,255,204,.4)';
 }
 
-// SINHRONIZACIJA SA ŽIVIM ABACUS SERVEROM AUTORA
-window.addEventListener('DOMContentLoaded', function() {
- // Čitanje stvarnog stanja sa servera preko /get/ rute pri svakom otvaranju ili F5 osvežavanju
- fetch('https://jasoncameron.dev')
- .then(function(res) { 
-  if (!res.ok) throw new Error('Mreža ne odgovara');
-  return res.json(); 
+/* =========================================================
+ ČITANJE GLOBALNOG BROJA SA SERVERA
+ Ovo se izvršava i posle F5 i CTRL+F5.
+ ========================================================= */
+function osveziCifruSaMreze() {
+ fetch(ABACUS_GET, {
+ method: 'GET',
+ cache: 'no-store'
+ })
+ .then(function(res) {
+ if (!res.ok) {
+ throw new Error('Abacus GET greška: ' + res.status);
+ }
+ return res.json();
  })
  .then(function(data) {
-  document.getElementById('likeCount13').innerText = parseInt(data.value || 0);
+ const broj = Number(data.value);
+ if (!Number.isFinite(broj)) {
+ throw new Error('Server nije vratio validan broj.');
+ }
+ document.getElementById('likeCount13').textContent = broj;
  })
- .catch(function() {
-  document.getElementById('likeCount13').innerText = "0";
+ .catch(function(error) {
+ console.error('Greška pri čitanju Abacusa:', error);
+ /* Server je jedini izvor istine */
  });
+}
 
- // Provera lokalnog statusa glasanja za ovaj uređaj
- var status = localStorage.getItem('status_lajka_finalni_13');
- if(status === 'lajkovano') {
-  stabilizujZelenoDugme();
+/* =========================================================
+ LAJK
+ ========================================================= */
+function lajukjPricu13() {
+ const vecLajkovano = localStorage.getItem(LIKE_STORAGE_KEY);
+ if (vecLajkovano === '1') {
+ alert('Već ste dali svoj glas i oklopili mrežnjaču oka na -180 mV!');
+ return;
+ }
+ 
+ const btn = document.getElementById('likeBtn13');
+ btn.disabled = true;
+
+ fetch(ABACUS_HIT, {
+ method: 'GET',
+ cache: 'no-store'
+ })
+ .then(function(res) {
+ if (!res.ok) {
+ throw new Error('Abacus HIT greška: ' + res.status);
+ }
+ return res.json();
+ })
+ .then(function(data) {
+ const noviBroj = Number(data.value);
+ if (!Number.isFinite(noviBroj)) {
+ throw new Error('Server nije vratio novi broj.');
+ }
+ /* Prikazujemo upravo ono što je server vratio */
+ document.getElementById('likeCount13').textContent = noviBroj;
+ /* Beležimo glas tek nakon uspešnog odgovora mreže */
+ localStorage.setItem(LIKE_STORAGE_KEY, '1');
+ stabilizujZelenoDugme();
+ })
+ .catch(function(error) {
+ console.error('Lajk nije upisan:', error);
+ alert('Glas nije upisan na server. Pokušajte ponovo.');
+ })
+ .finally(function() {
+ btn.disabled = false;
+ });
+}
+
+/* =========================================================
+ POKRETANJE PRILIKOM OTVARANJA STRANICE
+ ========================================================= */
+window.addEventListener('DOMContentLoaded', function() {
+ osveziCifruSaMreze();
+ if (localStorage.getItem(LIKE_STORAGE_KEY) === '1') {
+ stabilizujZelenoDugme();
  }
 });
 
-function lajkujPricu13() {
- var status = localStorage.getItem('status_lajka_finalni_13');
- 
- if (status !== 'lajkovano') {
-  // Slanje stvarnog impulsa na server preko /hit/ rute (uvećanje za +1)
-  fetch('https://jasoncameron.dev')
-  .then(function(res) { 
-   if (!res.ok) throw new Error('Greška pri upisu');
-   return res.json(); 
-  })
-  .then(function(data) {
-   document.getElementById('likeCount13').innerText = parseInt(data.value || 1);
-   localStorage.setItem('status_lajka_finalni_13', 'lajkovano');
-   stabilizujZelenoDugme();
-  })
-  .catch(function() {
-   alert("Mrežna veza trenutno štuca. Pokušajte ponovo za par sekundi.");
-  });
+/* =========================================================
+ DELJENJE
+ ========================================================= */
+function podeliSajt13() {
+ const url = 'https://draganloboda.github.io';
+ if (navigator.share) {
+ navigator.share({
+ title: 'Protokol Loboda - Priča 13',
+ text: 'Teorijski prikaz terapije kod retinopatije',
+ url: url
+ });
+ } else if (navigator.clipboard) {
+ navigator.clipboard.writeText(url)
+ .then(function() {
+ alert('Link ka portalu je kopiran!');
+ })
+ .catch(function() {
+ alert(url);
+ });
  } else {
-  alert("Već ste dali svoj glas i oklopili mrežnjaču oka na -180 mV!");
- }
-}
-
-function stabilizujZelenoDugme() {
- var btn = document.getElementById('likeBtn13');
- if(btn) {
-  btn.style.background = "#00ffcc";
-  btn.style.color = "#000000";
-  btn.style.borderColor = "#00ffcc";
-  btn.style.boxShadow = "0 0 15px rgba(0, 255, 204, 0.4)";
+ alert(url);
  }
 }
 </script>
-</div>
-
-
 
  <!-- VANREDNA PRIČA 12: ANTITUMORSKI EFEKAT JODA I LIPIDNI BILANS -->
 <div class="podfascikla">
