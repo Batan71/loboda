@@ -266,7 +266,7 @@ Kapitalna naučna vrednost ovog Protokola leži u činjenici da se ove tri stani
  <span class="mat">🧬 NISTE ZNALI DA: Svesnim podeljenim unosem sirovog žumancetnog jezgra, monosaharidnog šatla domaćeg meda, L-Tirozina i minimalnih kapi Lugola kroz tri dnevne stanice bez kapi vode, vi direktno varate krvno-retinalnu barijeru oka i upumpavate krunske anti-age materije (Lutein, Holin, Tirozin i Jod) pravo u mrežnjaču! Ovaj Protokol uspešno gasi unutrašnje ROS požare, reaktivira rad očnih mitohondrija na fabričkih −180 mV i maksimalno usporava genetske distrofije, dok zdravom i oštećenom vidu obezbeđuje trajnu oštrinu, dubinsku hidrataciju kapilara i stanje apsolutnog, hladnog i tiho ugašenog mira!</span>
 </p>
 
-<!-- PREKIDAČ ZA GLOBALNE STVARNE LAJKOVE (ABACUS API ŠATL - VERZIJA 4.0 STABILNA) -->
+<!-- PREKIDAČ ZA GLOBALNE STVARNE LAJKOVE (ABACUS API ŠATL - VERZIJA V6 KONAČNA) -->
 <div style="display: flex; gap: 15px; justify-content: flex-end; margin-top: 15px; padding-top: 10px; border-top: 1px solid #1e293b;">
  <button id="likeBtn13" onclick="lajkujPricu13()" style="background: #1e293b; color: #cbd5e1; padding: 8px 16px; border: 2px solid #ff007f; border-radius: 4px; font-size: 14px; font-family: sans-serif; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 0 10px rgba(255, 0, 127, 0.1);">
  ❤️ Lajkuj priču (<span id="likeCount13">0</span>)
@@ -282,77 +282,74 @@ Kapitalna naučna vrednost ovog Protokola leži u činjenici da se ove tri stani
 <script>
 function podeliSajt13() {
  if (navigator.share) {
- navigator.share({
- title: 'Protokol Loboda - Priča 13', 
- text: 'Teorijski prikaz therapy kod retinopatije', 
- url: 'https://draganloboda.github.io'
- });
+  navigator.share({
+   title: 'Protokol Loboda - Priča 13', 
+   text: 'Teorijski prikaz terapije kod retinopatije', 
+   url: 'https://draganloboda.github.io'
+  });
  } else {
- navigator.clipboard.writeText('https://draganloboda.github.io');
- alert("Link ka portalu je kopiran!");
+  navigator.clipboard.writeText('https://draganloboda.github.io');
+  alert("Link ka portalu je kopiran!");
  }
 }
 
-// ASINKRONI MEHANIZAM REALNOG GLOBALNOG SABIRANJA GLASOVA
+// SINHRONIZACIJA SA ŽIVIM ABACUS SERVEROM AUTORA
 window.addEventListener('DOMContentLoaded', function() {
- osveziCifruSaMreze();
+ // Čitanje stvarnog stanja sa servera preko /get/ rute pri svakom otvaranju ili F5 osvežavanju
+ fetch('https://jasoncameron.dev')
+ .then(function(res) { 
+  if (!res.ok) throw new Error('Mreža ne odgovara');
+  return res.json(); 
+ })
+ .then(function(data) {
+  document.getElementById('likeCount13').innerText = parseInt(data.value || 0);
+ })
+ .catch(function() {
+  document.getElementById('likeCount13').innerText = "0";
+ });
 
- var status = localStorage.getItem('status_lajka_finalni_14');
+ // Provera lokalnog statusa glasanja za ovaj uređaj
+ var status = localStorage.getItem('status_lajka_finalni_13');
  if(status === 'lajkovano') {
- stabilizujZelenoDugme();
+  stabilizujZelenoDugme();
  }
 });
 
-function osveziCifruSaMreze() {
- var urlGet = 'https://jasoncameron.dev';
- fetch(urlGet)
- .then(function(res) { return res.json(); })
- .then(function(data) {
- var stvarniZbir = parseInt(data.value || 0);
- document.getElementById('likeCount13').innerText = stvarniZbir;
- })
- .catch(function() {
- // Pad servera drži bezbedni ravan plato na ekranu
- });
-}
-
 function lajkujPricu13() {
- var status = localStorage.getItem('status_lajka_finalni_14');
+ var status = localStorage.getItem('status_lajka_finalni_13');
  
  if (status !== 'lajkovano') {
- var urlHit = 'https://jasoncameron.dev';
- fetch(urlHit)
- .then(function(res) { return res.json(); })
- .then(function(data) {
- var noviMrezniBroj = parseInt(data.value || 1);
- document.getElementById('likeCount13').innerText = noviMrezniBroj;
- localStorage.setItem('status_lajka_finalni_14', 'lajkovano');
- stabilizujZelenoDugme();
- })
- .catch(function() {
- // Lokalni rezervni buster u slučaju pucanja mrežne veze
- var trenutni = parseInt(document.getElementById('likeCount13').innerText) || 0;
- trenutni++;
- document.getElementById('likeCount13').innerText = trenutni;
- localStorage.setItem('status_lajka_finalni_14', 'lajkovano');
- stabilizujZelenoDugme();
- });
+  // Slanje stvarnog impulsa na server preko /hit/ rute (uvećanje za +1)
+  fetch('https://jasoncameron.dev')
+  .then(function(res) { 
+   if (!res.ok) throw new Error('Greška pri upisu');
+   return res.json(); 
+  })
+  .then(function(data) {
+   document.getElementById('likeCount13').innerText = parseInt(data.value || 1);
+   localStorage.setItem('status_lajka_finalni_13', 'lajkovano');
+   stabilizujZelenoDugme();
+  })
+  .catch(function() {
+   alert("Mrežna veza trenutno štuca. Pokušajte ponovo za par sekundi.");
+  });
  } else {
- alert("Već ste dali svoj glas i oklopili mrežnjaču oka na -180 mV!");
+  alert("Već ste dali svoj glas i oklopili mrežnjaču oka na -180 mV!");
  }
 }
 
 function stabilizujZelenoDugme() {
  var btn = document.getElementById('likeBtn13');
  if(btn) {
- btn.style.background = "#00ffcc";
- btn.style.color = "#000000";
- btn.style.borderColor = "#00ffcc";
- btn.style.boxShadow = "0 0 15px rgba(0, 255, 204, 0.4)";
+  btn.style.background = "#00ffcc";
+  btn.style.color = "#000000";
+  btn.style.borderColor = "#00ffcc";
+  btn.style.boxShadow = "0 0 15px rgba(0, 255, 204, 0.4)";
  }
 }
 </script>
 </div>
+
 
 
  <!-- VANREDNA PRIČA 12: ANTITUMORSKI EFEKAT JODA I LIPIDNI BILANS -->
