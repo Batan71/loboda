@@ -179,6 +179,30 @@ footer { text-align: center; padding: 40px 20px; color: #94a3b8; border-top: 1px
 
 </header> <!-- KRAJ ZAGLAVLJA -->
 
+<!-- NOVA PRVA FASCIKLA: DONATORI / NISTE ZNALI (POTPUNO POVEZANA NA NISKTE-ZNALI.HTML) -->
+<a href="niste-znali.html" id="niste-znali-vrh-box" style="
+ max-width: 800px; 
+ margin: 20px auto; 
+ padding: 20px; 
+ border: 2px solid #ff007f; 
+ background-color: rgba(255, 0, 127, 0.03); 
+ border-radius: 8px; 
+ text-align: center;
+ box-shadow: 0 0 15px rgba(255, 0, 127, 0.15);
+ font-family: monospace;
+ display: block;
+ text-decoration: none;
+ color: white;
+ cursor: pointer;
+">
+ <div style="color: #ff007f; font-weight: bold; font-size: 18px; letter-spacing: 2px; margin-bottom: 10px;">
+ 💼 DONATORI / 💡 NISTE ZNALI:
+ </div>
+ <div id="niste-znali-vrh-tekst" style="color: #ffffff; font-size: 16px; line-height: 1.8; font-family: sans-serif; text-align: center; padding: 0 10px;">
+  Pristup bazi znanja: Farmako recepti, inženjerske i biofizičke zanimljivosti, i strateška ponuda za investitore. Kliknite za otvaranje kompletnog priručnika.
+ </div>
+</a>
+ 
 <!-- ŽIVI PROZOR JE SADA KORAK ISPRED I POTPUNO IZOLOVAN OD SVIH DUGMADI -->
 <div id="jutarnja-dojava-box" style="
     max-width: 800px; 
@@ -254,10 +278,10 @@ footer { text-align: center; padding: 40px 20px; color: #94a3b8; border-top: 1px
 PROTOKOL LOBODA (15h / 9h)
 </a>
 
-<!-- DUGME 2: BESPLATNI DEO KNJIGE -->
-<a href="niste-znali.html" class="btn">
-<div class="btn-title">💼 DONATORI / 💡 NISTE ZNALI</div>
-Farmako recept / Tajne dugovečnosti
+<!-- DUGME 2: ATLAS FIZIOLOGIJE I TRANSPORTA JODA (REKALIBRISANO) -->
+<a href="atlas-joda.html" class="btn">
+<div class="btn-title">📗 ATLAS FIZIOLOGIJE I TRANSPORTA JODA</div>
+Biofizička i histološka dekonstrukcija 79 mikroanatomskih jedinica
 </a>
 
 <!-- DUGME 3: DELI PORTAL -->
@@ -401,17 +425,28 @@ Informacije
 <section class="section container">
 <h2 class="section-title">Knjige autora</h2>
 <div class="books">
-<div class="book">📘 Medicinska teorija - Lečenje oksido-redukcijom (ISBN 978-86-903366-0-9)</div>
-<div class="book">📕 Redoks juriš - Dostizanje maksimalnog genetskog koda dugovečnosti (ISBN 978-86-903366-2-3)</div>
-<div class="book" style="border-color: #00ffcc; cursor: pointer; text-align: left;" onclick="otvoriSigurnosniProzor()">
+  
+  <!-- PLAVA KNJIGA: AKTIVAN LINK NA STRANICU ZA ČITANJE POKLONA -->
+  <a href="medicina-teorija-jpg.html" class="book" style="display: block; text-decoration: none; color: white; border-left: 4px solid #38bdf8;">
+    📘 <span style="font-weight: bold; color: #38bdf8;">Medicinska teorija - Lečenje oksido-redukcijom</span> (ISBN 978-86-903366-0-9)
+  </a>
+  
+  <!-- CRVENA KNJIGA: AKTIVAN LINK NA STRANICU SA OPCIJAMA I ŠIFRAMA -->
+  <a href="knjiga-sr.html" class="book" style="display: block; text-decoration: none; color: white; border-left: 4px solid #ff007f;">
+    📕 <span style="font-weight: bold; color: #ff007f;">Redoks juriš - Dostizanje maksimalnog genetskog koda dugovečnosti</span> (ISBN 978-86-903366-2-3)
+  </a>
+  
+  <!-- NARANDŽASTI PRAKTIKUM: ZADRŽAVA SPECIJALNU FUNKCIJU ZA SIGURNOSNU KAPIJU -->
+  <div class="book" style="border-left: 4px solid #00ffcc; cursor: pointer; text-align: left;" onclick="otvoriSigurnosniProzor()">
     📙 <span style="font-weight: bold; color: #00ffcc;">Praktikum REDOKS JURIŠ</span> - Laboratorijski priručnik za kućnu izradu receptura za halogeno podmlađivanje ćelija (ISBN 978-86-903366-3-0)
-</div>
-<div class="book" style="border-color: #22c55e;">
+  </div>
+  
+  <!-- ZELENI ATLAS: AKTIVAN LINK KOJI VODI PRAVO NA NOVU STRANICU -->
+  <a href="atlas-joda.html" class="book" style="display: block; text-decoration: none; color: white; border-left: 4px solid #22c55e;">
     📗 <span style="font-weight: bold; color: #22c55e;">ATLAS FIZIOLOGIJE I TRANSPORTA JODA</span> - Biofizička i histološka dekonstrukcija 79 mikroanatomskih jedinica ljudskog organizma (U pripremi)
-</div>
-</div>
-</section>
+  </a>
 
+</div>
 </section>
 
 <div id="zivi-brojac-cifre"
