@@ -297,15 +297,24 @@ footer { text-align: center; padding: 40px 20px; color: #94a3b8; border-top: 1px
 <h2 class="section-title">Pristup sadržaju</h2>
 <div class="buttons">
  
- <!-- DUGME 1: KALKULATOR -->
-<a href="kalkulator.html" class="btn">
-<div class="btn-title">📊 KALKULATOR DUGOVEČNOSTI / LONGEVITY CALCULATOR</div>
-<div style="font-size: 11px; opacity: 0.85; margin-top: 3px;">
-    SRB: PROTOKOL LOBODA (15h / 9h) <br>
-    ENG: LOBODA PROTOCOL (15h / 9h)
-</div>
-</a>
+<!-- DUGME 1: KALKULATOR (DVOJEZIČNE PODFASCIKLE UNUTAR ISTOG PROZORA) -->
+<div class="btn" style="display: flex; flex-direction: column; justify-content: center; padding: 12px 12px; gap: 8px;">
+    
+    <!-- LOPTA 1: SRPSKI KALKULATOR -->
+    <a href="kalkulator.html" style="text-decoration: none; background: #0f172a; border: 1px solid #00ffcc; padding: 10px; border-radius: 6px; width: 100%; display: block; text-align: center;">
+        <div style="font-size: 11.5px; font-weight: bold; color: #00ffcc; font-family: sans-serif; text-transform: uppercase;">📊 KALKULATOR DUGOVEČNOSTI</div>
+        <div style="font-size: 10px; color: #cbd5e1; font-family: sans-serif; margin-top: 2px;">PROTOKOL LOBODA (15h / 9h)</div>
+    </a>
 
+    <!-- LOPTA 2: ENGLESKI KALKULATOR -->
+    <a href="kalkulator-en.html" style="text-decoration: none; background: #0f172a; border: 1px solid #38bdf8; padding: 10px; border-radius: 6px; width: 100%; display: block; text-align: center;">
+        <div style="font-size: 11.5px; font-weight: bold; color: #38bdf8; font-family: sans-serif; text-transform: uppercase;">📊 LONGEVITY CALCULATOR</div>
+        <div style="font-size: 10px; color: #cbd5e1; font-family: sans-serif; margin-top: 2px;">LOBODA PROTOCOL (15h / 9h)</div>
+    </a>
+    
+</div>
+
+  
 <!-- DUGME 2: ATLAS FIZIOLOGIJE I TRANSPORTA JODA -->
 <a href="atlas-joda.html" class="btn">
 <div class="btn-title">📗 ATLAS FIZIOLOGIJE I TRANSPORTA JODA</div>
