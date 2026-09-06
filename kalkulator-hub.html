@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Select Language / Izaberite Jezik — Longevity Calculator</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+font-family: monospace;
+background: linear-gradient(135deg,#0f172a,#1e293b);
+color: white;
+min-height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+padding: 20px;
+}
+.hub-container {
+width: 100%;
+max-width: 550px;
+background: #141d34;
+padding: 30px;
+border-radius: 16px;
+border: 2px solid #00ffcc;
+box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+text-align: center;
+}
+h1 { color: #00ffcc; font-size: 1.6rem; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px; }
+.subtitle { color: #94a3b8; font-size: 13px; margin-bottom: 25px; line-height: 1.5; }
+.jezička-mreža { display: flex; flex-direction: column; gap: 15px; }
+.jezik-btn {
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 16px;
+background: #1e293b;
+border: 2px solid #334155;
+border-radius: 10px;
+text-decoration: none;
+color: white;
+transition: 0.3s;
+cursor: pointer;
+}
+.jezik-btn:hover {
+transform: translateY(-3px);
+background: #1e293b;
+}
+.srb-btn:hover { border-color: #00ffcc; box-shadow: 0 0 15px rgba(0,255,204,0.25); }
+.eng-btn:hover { border-color: #38bdf8; box-shadow: 0 0 15px rgba(56,189,248,0.25); }
+.rus-btn:hover { border-color: #e2e8f0; opacity: 0.6; }
+.j-title { font-size: 16px; font-weight: bold; margin-bottom: 4px; }
+.back-btn { display: inline-block; margin-top: 25px; color: #64748b; text-decoration: none; font-size: 13px; font-weight: bold; transition: 0.3s; }
+.back-btn:hover { color: #ff007f; }
+</style>
+</head>
+<body>
+
+<div class="hub-container">
+    <h1>Select Language / Избор Језика</h1>
+    <div class="subtitle">Please select your preferred language for the Longevity Calculator Simulation<br>Молимо изаберите језик за покретање калкулатора дуговечности</div>
+    
+    <div class="jezička-mreža">
+        
+        <!-- 1. SRPSKI JEZIK (Vodi na Vaš originalni kalkulator.html) -->
+        <a href="kalkulator.html" class="jezik-btn srb-btn">
+            <div class="j-title" style="color: #00ffcc;">🇷🇸 SRPSKI JEZIK</div>
+            <div style="font-size: 12px; color: #cbd5e1;">Protokol Loboda v2.0 (Srpska verzija)</div>
+        </a>
+
+        <!-- 2. ENGLESKI JEZIK (Vodi na novu stranicu kalkulator-en.html) -->
+        <a href="kalkulator-en.html" class="jezik-btn eng-btn">
+            <div class="j-title" style="color: #38bdf8;">🇬🇧 ENGLISH LANGUAGE</div>
+            <div style="font-size: 12px; color: #cbd5e1;">Loboda Protocol v2.0 (Global Version)</div>
+        </a>
+
+        <!-- 3. RUSKI JEZIK (REZERVACIJA - Spremno za buduće širenje) -->
+        <div class="jezik-btn rus-btn" style="cursor: not-allowed; opacity: 0.4;">
+            <div class="j-title" style="color: #ffffff;">🇷🇺 РУССКИЙ ЯЗЫК</div>
+            <div style="font-size: 12px; color: #94a3b8;">В разработке / In Development</div>
+        </div>
+
+    </div>
+
+    <a href="index.html" class="back-btn">← BACK TO PORTAL / НАЗАД НА ПОРТАЛ</a>
+</div>
+
+</body>
+</html>
