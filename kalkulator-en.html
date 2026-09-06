@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Longevity Calculator — Loboda Protocol v2.0</title>
+ <style>
+ body { font-family: sans-serif; background-color: #0a0f1d; color: white; padding: 20px; }
+ .container { max-width: 650px; margin: 0 auto; background: #141d34; padding: 25px; border-radius: 12px; border: 1px solid #00ffcc; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+ h1, h3 { color: #00ffcc; text-align: center; margin-top: 0; text-transform: uppercase; letter-spacing: 1px; }
+ .form-group { margin-bottom: 18px; }
+ label { display: block; margin-bottom: 6px; font-size: 14px; color: #8fa0dd; font-weight: bold; }
+ input, select { width: 100%; padding: 11px; border-radius: 6px; border: 1px solid #334767; background: #0a0f1d; color: white; box-sizing: border-box; font-size: 16px; transition: 0.3s; }
+ input:focus, select:focus { border-color: #00ffcc; outline: none; box-shadow: 0 0 8px rgba(0,255,204,0.3); }
+ .checkbox-group { display: flex; flex-direction: column; gap: 10px; background: #0a0f1d; padding: 14px; border-radius: 6px; border: 1px solid #334767; margin-top: 5px; }
+ .checkbox-label { display: flex; align-items: center; gap: 10px; color: white; font-weight: normal; cursor: pointer; font-size: 15px; }
+ .checkbox-label input { width: auto; cursor: pointer; transform: scale(1.1); }
+ .info-text { font-size: 12px; color: #64748b; margin-top: 4px; font-style: italic; line-height: 1.4; }
+ button { width: 100%; padding: 14px; font-size: 17px; font-weight: bold; background: #00ffcc; color: #0a0f1d; border: none; border-radius: 6px; cursor: pointer; margin-top: 15px; text-transform: uppercase; transition: 0.3s; letter-spacing: 0.5px; }
+ button:hover { background: #00ccaa; box-shadow: 0 0 15px rgba(0,255,204,0.4); }
+ 
+ .results { margin-top: 25px; padding-top: 20px; border-top: 1px dashed #334767; display: none; }
+ .phase { background: #0a0f1d; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #1f2d4a; }
+ .row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; align-items: center; }
+ .val { font-weight: bold; color: #00ffcc; }
+ .alert { color: #ff3366; font-weight: bold; }
+ .warn { color: #ffcc00; font-weight: bold; }
+ .good { color: #00ffcc; font-weight: bold; }
+ 
+ .badge { padding: 4px 10px; border-radius: 20px; font-size: 13px; font-weight: bold; text-transform: uppercase; }
+ .badge-visoka { background: rgba(0, 255, 204, 0.15); color: #00ffcc; border: 1px solid #00ffcc; }
+ .badge-srednja { background: rgba(255, 204, 0, 0.15); color: #ffcc00; border: 1px solid #ffcc00; }
+ .badge-niska { background: rgba(255, 51, 102, 0.15); color: #ff3366; border: 1px solid #ff3366; }
+ 
+ .list { max-height: 120px; overflow-y: auto; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 4px; font-family: monospace; font-size: 13px; color: #cbd5e1; border: 1px solid #1f2d4a; }
+ .presuda-box { border-left: 4px solid #ffcc00; background: #1e293b; padding: 15px; margin-top: 15px; border-radius: 0 6px 6px 0; }
+ .presuda-title { font-weight: bold; color: #ffcc00; margin-bottom: 6px; text-transform: uppercase; font-size: 13px; letter-spacing: 0.5px; }
+ .presuda-text { font-size: 14px; margin: 0; color: #e2e8f0; text-align: justify; line-height: 1.5; }
+ 
+ .potencijal-box { background: #0f172a; padding: 15px; border-radius: 8px; border: 1px solid #334155; margin-top: 15px; }
+ .potencijal-item { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; color: #cbd5e1; }
+ .potencijal-val { font-weight: bold; color: #38bdf8; }
+ </style>
+</head>
+<body>
+<div class="container">
+ <h1>Loboda Protocol v2.0</h1>
+ <p style="text-align:center; color:#8fa0dd; font-size:13px; margin-top:-10px;">Advanced Biophysical Scanner & Nonlinear Lifespan Simulation</p>
+ 
+ <div class="form-group">
+ <label>Subject's Age (1 – 120 years):</label>
+ <input type="number" id="starost" value="55" min="1" max="120">
+ </div>
+ <div class="form-group">
+ <label>Body Height (80 – 250 cm):</label>
+ <input type="number" id="visina" value="176" min="80" max="250">
+ </div>
+ <div class="form-group">
+ <label>Body Mass (20 – 350 kg):</label>
+ <input type="number" id="masa" value="86" min="20" max="350">
+ </div>
+ <div class="form-group">
+ <label>Subject's Gender:</label>
+ <select id="pol">
+ <option value="Muski">Male</option>
+ <option value="Zenski">Female</option>
+ </select>
+ </div>
+ <div class="form-group">
+ <label>Ecological Debt & Smoking Status:</label>
+ <select id="dug">
+ <option value="baza">Base (Clean terrain, non-smoker)</option>
+ <option value="srednje">Medium Noise (City smog)</option>
+ <option value="bivsi">Former Smoker (Over 12 months smoke-free)</option>
+ <option value="maksimalno">Maximum Noise (Active smoker)</option>
+ </select>
+ </div>
+ <div class="form-group">
+ <label>Alcohol Consumption:</label>
+ <select id="alkohol">
+ <option value="nikada">Do not drink at all / Rare</option>
+ <option value="povremeno">Occasional (Weekends or a glass with lunch)</option>
+ <option value="redovno">Regular (Several times a week)</option>
+ <option value="svakodnevno">Daily consumption</option>
+ </select>
+ </div>
+ <div class="form-group">
+ <label>Physical and Mitochondrial Workload:</label>
+ <div class="checkbox-group">
+ <label class="checkbox-label">
+ <input type="checkbox" id="sportista"> Professional Athlete
+ </label>
+ <div class="info-text">**Note:** Professional sports imply long-term intensive daily training and a highly competitive regimen (extreme cellular exhaustion), not a standard gym visit 3 times a week.</div>
+ </div>
+ </div>
+ <div class="form-group">
+ <label>Documented Chronic Diseases & Tissue Strain:</label>
+ <div class="checkbox-group">
+ <label class="checkbox-label"><input type="checkbox" id="hipertenzija"> Hypertension (High blood pressure)</label>
+ <label class="checkbox-label"><input type="checkbox" id="dijabetes"> Type 2 Diabetes</label>
+ <label class="checkbox-label"><input type="checkbox" id="pluca"> Chronic Lung Disease (Asthma, COPD)</label>
+ <label class="checkbox-label"><input type="checkbox" id="srce"> Heart Patient (Angina, history of infarction)</label>
+ <label class="checkbox-label"><input type="checkbox" id="bubrezi"> Chronic Kidney Disease</label>
+ </div>
+ </div>
+ <div class="form-group">
+ <label style="color:#ffcc00;">Experimental Daily Iodine Drops Intake (Loboda Protocol):</label>
+ <input type="number" id="proizvoljno" value="12" style="border-color:#ffcc00;" min="0" max="100">
+ </div>
+ <button onclick="pokreniSimulacijuObnove()">RUN BODY SCAN</button>
+ <div id="prikaz" class="results">
+ <h3>SIMULATION RESULTS v2.0</h3>
+ 
+ <div class="phase">
+ <div class="row"><span>Body Surface Area (BSA):</span><span id="out-sf" class="val">0</span></div>
+ <div class="row"><span>Body Mass Index (BMI):</span><span id="out-bmi" class="val">0</span></div>
+ <div class="row"><span>Optimal Daily Intake (N):</span><span id="out-n" class="val" style="font-size:16px;">0 drops</span></div>
+ </div>
+ <div class="phase" style="border-color: #38bdf8;">
+ <div class="row">
+ <span style="font-weight: bold; color: #38bdf8;">🧬 Current Tissue Biological Reserve:</span>
+ <span id="out-rezerva" class="badge">Negligible</span>
+ </div>
+ </div>
+ 
+ <div class="phase">
+ <div class="row"><span>Daily Assault Volume (15h):</span><span id="out-dan" class="val">0 drops</span></div>
+ <div class="row"><span>Night Lipid Anchor (9h):</span><span id="out-noc" class="val">0 drops</span></div>
+ <div class="row"><span>Total Water Volume:</span><span id="out-voda" class="val">0 ml</span></div>
+ </div>
+ 
+ <div class="phase">
+ <label style="color:#00ffcc; font-weight:bold; margin-bottom:5px; display:block;">Water Shield Chrono-Protocol (Proportional Bio-Diffusion):</label>
+ <div id="out-satnica" class="list"></div>
+ </div>
+ 
+ <div class="phase">
+ <div class="row"><span>1. Without Halogen Iodine Protection:</span><span id="out-v1" class="alert">0</span></div>
+ <div class="row"><span>2. With FULL Halogen Protection:</span><span id="out-v2" class="good">0</span></div>
+ <div class="row"><span>3. With CURRENT EXPERIMENTAL Intake:</span><span id="out-v3" class="warn">0</span></div>
+ </div>
+ <!-- TRIPLE GRAPH OF POTENTIALS AND MAXIMUM FORECASTS -->
+ <div class="potencijal-box">
+ <div class="presuda-title" style="color: #38bdf8; margin-bottom: 12px;">📈 BY ELIMINATING BAD HABITS AND STRAINS YOU WILL EXTEND YOUR LIFE BY:</div>
+ <div id="out-potencijal-lista-v2" class="list" style="max-height: none; background: transparent; border: none; padding: 0; margin-bottom: 15px;"></div>
+ <div class="presuda-title" style="color: #00ffcc; margin-top: 15px; margin-bottom: 10px; border-top: 1px solid #334155; padding-top: 12px;">🏁 MAXIMUM ACHIEVABLE LIFESPAN FORECAST:</div>
+ <div class="row" style="font-size: 13.5px; margin-bottom: 6px;">
+ <span style="color: #ff3366;">1. Without Halogen Iodine Protection:</span>
+ <span id="out-max-v1" class="alert">0 years</span>
+ </div>
+ <div class="row" style="font-size: 13.5px; margin-bottom: 6px;">
+ <span style="color: #ffcc00;">2. With Current Experimental Intake:</span>
+ <span id="out-max-v3" class="warn">0 years</span>
+ </div>
+ <div class="row" style="font-size: 13.5px; margin-bottom: 6px; font-weight: bold;">
+ <span style="color: #00ffcc;">3. With FULL Halogen Protection:</span>
+ <span id="out-max-v2" class="good">0 years</span>
+ </div>
+ </div>
+ 
+ <div class="presuda-box">
+ <div class="presuda-title">📋 Engineering Verdict and System Recommendations:</div>
+ <p class="presuda-text" id="out-presuda"></p>
+ </div>
+ </div>
+</div>
+<script>
+function pokreniSimulacijuObnove() {
+ var v = Math.min(120, Math.max(1, Number(document.getElementById('starost').value)));
+ var h = Math.min(250, Math.max(80, Number(document.getElementById('visina').value)));
+ var m = Math.min(350, Math.max(20, Number(document.getElementById('masa').value)));
+ 
+ document.getElementById('starost').value = v;
