@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Калькулятор Долголетия — Протокол Лободы v2.0</title>
+ <style>
+ body { font-family: sans-serif; background-color: #0a0f1d; color: white; padding: 20px; }
+ .container { max-width: 650px; margin: 0 auto; background: #141d34; padding: 25px; border-radius: 12px; border: 1px solid #00ffcc; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+ h1, h3 { color: #00ffcc; text-align: center; margin-top: 0; text-transform: uppercase; letter-spacing: 1px; }
+ .form-group { margin-bottom: 18px; }
+ label { display: block; margin-bottom: 6px; font-size: 14px; color: #8fa0dd; font-weight: bold; }
+ input, select { width: 100%; padding: 11px; border-radius: 6px; border: 1px solid #334767; background: #0a0f1d; color: white; box-sizing: border-box; font-size: 16px; transition: 0.3s; }
+ input:focus, select:focus { border-color: #00ffcc; outline: none; box-shadow: 0 0 8px rgba(0,255,204,0.3); }
+ .checkbox-group { display: flex; flex-direction: column; gap: 10px; background: #0a0f1d; padding: 14px; border-radius: 6px; border: 1px solid #334767; margin-top: 5px; }
+ .checkbox-label { display: flex; align-items: center; gap: 10px; color: white; font-weight: normal; cursor: pointer; font-size: 15px; }
+ .checkbox-label input { width: auto; cursor: pointer; transform: scale(1.1); }
+ .info-text { font-size: 12px; color: #64748b; margin-top: 4px; font-style: italic; line-height: 1.4; }
+ button { width: 100%; padding: 14px; font-size: 17px; font-weight: bold; background: #00ffcc; color: #0a0f1d; border: none; border-radius: 6px; cursor: pointer; margin-top: 15px; text-transform: uppercase; transition: 0.3s; letter-spacing: 0.5px; }
+ button:hover { background: #00ccaa; box-shadow: 0 0 15px rgba(0,255,204,0.4); }
+ 
+ .results { margin-top: 25px; padding-top: 20px; border-top: 1px dashed #334767; display: none; }
+ .phase { background: #0a0f1d; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #1f2d4a; }
+ .row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; align-items: center; }
+ .val { font-weight: bold; color: #00ffcc; }
+ .alert { color: #ff3366; font-weight: bold; }
+ .warn { color: #ffcc00; font-weight: bold; }
+ .good { color: #00ffcc; font-weight: bold; }
+ 
+ .badge { padding: 4px 10px; border-radius: 20px; font-size: 13px; font-weight: bold; text-transform: uppercase; }
+ .badge-visoka { background: rgba(0, 255, 204, 0.15); color: #00ffcc; border: 1px solid #00ffcc; }
+ .badge-srednja { background: rgba(255, 204, 0, 0.15); color: #ffcc00; border: 1px solid #ffcc00; }
+ .badge-niska { background: rgba(255, 51, 102, 0.15); color: #ff3366; border: 1px solid #ff3366; }
+ 
+ .list { max-height: 120px; overflow-y: auto; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 4px; font-family: monospace; font-size: 13px; color: #cbd5e1; border: 1px solid #1f2d4a; }
+ .presuda-box { border-left: 4px solid #ffcc00; background: #1e293b; padding: 15px; margin-top: 15px; border-radius: 0 6px 6px 0; }
+ .presuda-title { font-weight: bold; color: #ffcc00; margin-bottom: 6px; text-transform: uppercase; font-size: 13px; letter-spacing: 0.5px; }
+ .presuda-text { font-size: 14px; margin: 0; color: #e2e8f0; text-align: justify; line-height: 1.5; }
+ 
+ .potencijal-box { background: #0f172a; padding: 15px; border-radius: 8px; border: 1px solid #334155; margin-top: 15px; }
+ .potencijal-item { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; color: #cbd5e1; }
+ .potencijal-val { font-weight: bold; color: #38bdf8; }
+ </style>
+</head>
+<body>
+<div class="container">
+ <h1>Протокол Лободы v2.0</h1>
+ <p style="text-align:center; color:#8fa0dd; font-size:13px; margin-top:-10px;">Продвинутый биофизический сканер и нелинейное моделирование срока жизни</p>
+ 
+ <div class="form-group">
+ <label>Возраст субъекта (1 – 120 лет):</label>
+ <input type="number" id="starost" value="55" min="1" max="120">
+ </div>
+ <div class="form-group">
+ <label>Рост тела (80 – 250 см):</label>
+ <input type="number" id="visina" value="176" min="80" max="250">
+ </div>
+ <div class="form-group">
+ <label>Масса тела (20 – 350 кг):</label>
+ <input type="number" id="masa" value="86" min="20" max="350">
+ </div>
+ <div class="form-group">
+ <label>Пол субъекта:</label>
+ <select id="pol">
+ <option value="Muski">Мужской</option>
+ <option value="Zenski">Женский</option>
+ </select>
+ </div>
+ <div class="form-group">
+ <label>Экологический долг и статус курения:</label>
+ <select id="dug">
+ <option value="baza">База (Чистый регион, некурящий)</option>
+ <option value="srednje">Средний шум (Городской смог)</option>
+ <option value="bivsi">Бывший курильщик (Более 12 месяцев без сигарет)</option>
+ <option value="maksimalno">Максимальный шум (Активный курильщик)</option>
+ </select>
+ </div>
+ <div class="form-group">
+ <label>Потребление алкоголя:</label>
+ <select id="alkohol">
+ <option value="nikada">Не пью вообще / Редко</option>
+ <option value="povremeno">Периодически (По выходным или бокал за обедом)</option>
+ <option value="redovno">Регулярно (Несколько раз в неделю)</option>
+ <option value="svakodnevno">Ежедневное потребление</option>
+ </select>
+ </div>
+ <div class="form-group">
+ <label>Физическая и митохондриальная нагрузка:</label>
+ <div class="checkbox-group">
+ <label class="checkbox-label">
+ <input type="checkbox" id="sportista"> Профессиональный спортсмен
+ </label>
+ <div class="info-text">**Примечание:** Профессиональный спорт подразумевает многолетний интенсивный ежедневный соревновательный режим (экстремальное истощение клеток), а не обычное посещение спортзала 3 раза в неделю.</div>
+ </div>
+ </div>
+ <div class="form-group">
+ <label>Зарегистрированные хронические заболевания и нагрузки на ткани:</label>
+ <div class="checkbox-group">
+ <label class="checkbox-label"><input type="checkbox" id="hipertenzija"> Гипертония (Высокое кровяное давление)</label>
+ <label class="checkbox-label"><input type="checkbox" id="dijabetes"> Диабет 2-го типа</label>
+ <label class="checkbox-label"><input type="checkbox" id="pluca"> Хроническое заболевание легких (Астма, ХОБЛ)</label>
+ <label class="checkbox-label"><input type="checkbox" id="srce"> Сердечно-сосудистые заболевания (ИБС, инфаркт в анамнезе)</label>
+ <label class="checkbox-label"><input type="checkbox" id="bubrezi"> Хроническая болезнь почек</label>
+ </div>
+ </div>
+ <div class="form-group">
+ <label style="color:#ffcc00;">Экспериментальный суточный прием капель йода (Протокол Лободы):</label>
+ <input type="number" id="proizvoljno" value="12" style="border-color:#ffcc00;" min="0" max="100">
+ </div>
+ <button onclick="pokreniSimulacijuObnove()">ЗАПУСТИТЬ СКАНЕР ОРГАНИЗМА</button>
+ <div id="prikaz" class="results">
+ <h3>РЕЗУЛЬТАТЫ МОДЕЛИРОВАНИЯ v2.0</h3>
+ 
+ <div class="phase">
+ <div class="row"><span>Площадь поверхности тела (BSA):</span><span id="out-sf" class="val">0</span></div>
+ <div class="row"><span>Индекс массы тела (ИМТ / BMI):</span><span id="out-bmi" class="val">0</span></div>
+ <div class="row"><span>Оптимальный суточный прием (N):</span><span id="out-n" class="val" style="font-size:16px;">0 капель</span></div>
+ </div>
+ <div class="phase" style="border-color: #38bdf8;">
+ <div class="row">
+ <span style="font-weight: bold; color: #38bdf8;">🧬 Текущий биологический резерв тканей:</span>
+ <span id="out-rezerva" class="badge">Незначительно</span>
+ </div>
+ </div>
+ <div class="phase">
+ <div class="row"><span>Дневной штурмовой объем (15ч):</span><span id="out-dan" class="val">0 капель</span></div>
+ <div class="row"><span>Ночной липидный анкер (9ч):</span><span id="out-noc" class="val">0 капель</span></div>
+ <div class="row"><span>Общий объем воды:</span><span id="out-voda" class="val">0 мл</span></div>
+ </div>
+ 
+ <div class="phase">
+ <label style="color:#00ffcc; font-weight:bold; margin-bottom:5px; display:block;">График водного щита (Протокол пропорциональной биодиффузии):</label>
+ <div id="out-satnica" class="list"></div>
+ </div>
+ 
+ <div class="phase">
+ <div class="row"><span>1. Без галогенной йодной защиты:</span><span id="out-v1" class="alert">0</span></div>
+ <div class="row"><span>2. С ПОЛНОЙ йодной защитой:</span><span id="out-v2" class="good">0</span></div>
+ <div class="row"><span>3. С ТЕКУЩИМ ЭКСПЕРИМЕНТАЛЬНЫМ приемом:</span><span id="out-v3" class="warn">0</span></div>
+ </div>
+ <!-- ТРОЙНОЙ ГРАФИК ПОТЕНЦИАЛОВ И МАКСИМАЛЬНЫХ ПРОГНОЗ -->
+ <div class="potencijal-box">
+ <div class="presuda-title" style="color: #38bdf8; margin-bottom: 12px;">📈 ИСКЛЮЧИВ ВРЕДНЫЕ ПРИВЫЧКИ И НАГРУЗКИ, ВЫ ПРОДЛИТЕ ЖИЗНЬ НА:</div>
+ <div id="out-potencijal-lista-v2" class="list" style="max-height: none; background: transparent; border: none; padding: 0; margin-bottom: 15px;"></div>
+ <div class="presuda-title" style="color: #00ffcc; margin-top: 15px; margin-bottom: 10px; border-top: 1px solid #334155; padding-top: 12px;">🏁 МАКСИМАЛЬНО ДОСТИЖИМЫЙ ПРОГНОЗ СРОКА ЖИЗНИ:</div>
+ <div class="row" style="font-size: 13.5px; margin-bottom: 6px;">
+ <span style="color: #ff3366;">1. Без галогенной йодной защиты:</span>
+ <span id="out-max-v1" class="alert">0 лет</span>
+ </div>
+ <div class="row" style="font-size: 13.5px; margin-bottom: 6px;">
+ <span style="color: #ffcc00;">2. С текущим экспериментальным приемом:</span>
+ <span id="out-max-v3" class="warn">0 лет</span>
+ </div>
+ <div class="row" style="font-size: 13.5px; margin-bottom: 6px; font-weight: bold;">
+ <span style="color: #00ffcc;">3. С ПОЛНОЙ галогенной защитой:</span>
+ <span id="out-max-v2" class="good">0 лет</span>
+ </div>
+ </div>
+ 
+ <div class="presuda-box">
+ <div class="presuda-title">📋 Инженерное заключение и рекомендации системы:</div>
+ <p class="presuda-text" id="out-presuda"></p>
+ </div>
+ </div>
+</div>
+<script>
+function pokreniSimulacijuObnove() {
+ var v = Math.min(120, Math.max(1, Number(document.getElementById('starost').value)));
+ var h = Math.min(250, Math.max(80, Number(document.getElementById('visina').value)));
+ var m = Math.min(350, Math.max(20, Number(document.getElementById('masa').value)));
+ 
+ document.getElementById('starost').value = v;
+ document.getElementById('visina').value = h;
+ document.getElementById('masa').value = m;
+ var p = document.getElementById('pol').value;
+ var d = document.getElementById('dug').value;
+ var alk = document.getElementById('alkohol').value;
+ var sport = document.getElementById('sportista').checked;
+ var pr = Math.max(0, Number(document.getElementById('proizvoljno').value));
+ var hiper = document.getElementById('hipertenzija').checked;
+ var dijab = document.getElementById('dijabetes').checked;
+ var pluca = document.getElementById('pluca').checked;
+ var srce = document.getElementById('srce').checked;
+ var bubr = document.getElementById('bubrezi').checked;
+ var sf = 0.007184 * Math.pow(m, 0.425) * Math.pow(h, 0.725);
+ var hM = h / 100;
+ var bmi = m / (hM * hM);
+ var idealnaMasa = 21.75 * (hM * hM);
+ var razlikaMase = Math.round(m - idealnaMasa);
+ var vn = (p === "Muski") ? 82.9 : 89.0;
+ var khut = 6.6667;
+ var fm = 1.0;
+ var fto = 0.0;
+ if(d === "srednje") { fm = 1.3; fto += -0.05; }
+ if(d === "bivsi") { fm = 1.1; fto += -0.02; } 
+ if(d === "maksimalno") { fm = 1.6; fto += -0.22; }
+ 
+ if(alk === "povremeno") { fto += -0.02; }
+ if(alk === "redovno") { fto += -0.06; }
+ if(alk === "svakodnevno") { fto += -0.15; }
+ if(sport) { fto += -0.06; }
+ if(hiper) { fto += -0.05; } 
+ if(dijab) { fto += -0.12; } 
+ if(pluca) { fto += -0.10; } 
+ if(srce) { fto += -0.18; } 
+ if(bubr) { fto += -0.20; } 
+ if(bmi >= 25 && bmi < 30) { fto += -0.03; }
+ if(bmi >= 30 && bmi < 35) { fto += -0.08; }
+ if(bmi >= 35) { fto += -0.15; }
+ var n = Math.round(12 * sf * fm);
+ var dan = Math.round(n * 0.833);
+ var noc = n - dan;
+ var voda = dan * 50;
+ var html = "";
+ var preostalo = dan;
+ for(var s = 8; s <= 22; s++) {
+ var kapi = Math.ceil(preostalo / (22 - s + 1));
+ preostalo -= kapi;
+ html += (s < 10 ? "0" + s : s) + ":00 — доза 50 мл (" + kapi + " капель)<br>";
+ }
+ var pz1 = vn - v; if(pz1 < 0) pz1 = 0;
+ var v1 = v + (pz1 * (1 + fto));
+ var pz2 = (vn - v) * khut; if(pz2 < 0) pz2 = 0;
+ var v2 = v + (pz2 * (1 + fto));
+ var odnos = n > 0 ? (pr / n) : 0;
+ if(odnos > 1) { odnos = 1; }
+ var khu2 = 1 + (khut - 1) * odnos;
+ var pz3 = (vn - v) * khu2; if(pz3 < 0) pz3 = 0;
+ var v3 = v + (pz3 * (1 + fto));
+ document.getElementById('out-sf').innerText = sf.toFixed(4) + " м²";
+ document.getElementById('out-bmi').innerText = bmi.toFixed(1);
+ document.getElementById('out-n').innerText = n + " капель";
+ document.getElementById('out-dan').innerText = dan + " капель";
+ document.getElementById('out-noc').innerText = noc + " капель";
+ document.getElementById('out-voda').innerText = voda + " мл";
+ document.getElementById('out-satnica').innerHTML = html;
+ document.getElementById('out-v1').innerText = v1.toFixed(1) + " лет";
+ document.getElementById('out-v2').innerText = v2.toFixed(1) + " лет";
+ document.getElementById('out-v3').innerText = v3.toFixed(1) + " лет";
+ var rezervaElement = document.getElementById('out-rezerva');
+ rezervaElement.className = "badge"; 
+ 
+ var loadFactor = Math.abs(fto);
+ if (v > 65) { loadFactor += 0.05; } 
+ if (loadFactor <= 0.10 && bmi < 26) {
+ rezervaElement.innerText = "🟢 Высокий (Отличное клеточное напряжение)";
+ rezervaElement.classList.add("badge-visoka");
+ } else if (loadFactor <= 0.35 && bmi < 31) {
+ rezervaElement.innerText = "🟡 Средний (Умеренная кража электронов)";
+ rezervaElement.classList.add("badge-srednja");
+ } else {
+ rezervaElement.innerText = "🔴 Низкий (Хронический энергетический дефицит)";
+ rezervaElement.classList.add("badge-niska");
+ }
+ var preostaliVekMax = vn - v;
+ if (preostaliVekMax < 0) preostaliVekMax = 0;
+ // Расчет индивидуального ущерба в годах на основе биофизической нагрузки
+ var stetaPusnja = (d === "maksimalno") ? (preostaliVekMax * 0.22) : 0;
+ var stetaDijab = dijab ? (preostaliVekMax * 0.12) : 0;
+ 
+ // НЕЛИНЕЙНАЯ МОДЕЛЬ ОЖИРЕНИЯ: Отслеживает процент избыточной жировой ткани
+ var stetaGojaznost = 0;
+ if (razlikaMase > 0 && idealnaMasa > 0) {
+ var procenatViska = razlikaMase / idealnaMasa;
+ stetaGojaznost = (preostaliVekMax * 0.45 * Math.pow(procenatViska, 1.3));
+ if (stetaGojaznost > preostaliVekMax * 0.40) { stetaGojaznost = preostaliVekMax * 0.40; }
+ }
+ 
+ var stetaSrce = srce ? (preostaliVekMax * 0.18) : 0;
+ var stetaBubr = bubr ? (preostaliVekMax * 0.20) : 0;
+ var stetaAlk = (alk === "svakodnevno") ? (preostaliVekMax * 0.15) : ((alk === "redovno") ? (preostaliVekMax * 0.06) : 0);
+ var ukupnaStetaZajedno = stetaPusnja + stetaDijab + stetaGojaznost + stetaSrce + stetaBubr + stetaAlk;
+ 
+ // МАКСИМАЛЬНЫЕ ДОСТИЖИМЫЕ ПРОГНОЗЫ
+ var maxMogucaV1 = vn; 
+ var maxMogucaV3 = v + (preostaliVekMax * khu2);
+ var maxMogucaV2 = v + (preostaliVekMax * khut);
+ document.getElementById('out-max-v1').innerText = maxMogucaV1.toFixed(1) + " лет";
+ document.getElementById('out-max-v3').innerText = maxMogucaV3.toFixed(1) + " лет";
+ document.getElementById('out-max-v2').innerText = maxMogucaV2.toFixed(1) + " лет";
+ var potencijalHtmlV2 = "";
+ 
+ if (ukupnaStetaZajedno > 0) {
+ potencijalHtmlV2 += "<div style='margin-bottom: 8px; font-weight: bold; color: #ff3366;'>Сценарий 1: Без галогенной защиты (Исключив факторы нагрузки, вы получите):</div>";
+ if (stetaPusnja > 0) potencijalHtmlV2 += "<div class='potencijal-item'><span>• Отказ от курения:</span><span class='potencijal-val' style='color:#ff3366;'>+" + stetaPusnja.toFixed(1) + " лет</span></div>";
+ if (stetaGojaznost > 0) potencijalHtmlV2 += "<div class='potencijal-item'><span>• Регуляция массы тела (до оптимальной):</span><span class='potencijal-val' style='color:#ff3366;'>+" + stetaGojaznost.toFixed(1) + " лет</span></div>";
+ if (stetaDijab > 0) potencijalHtmlV2 += "<div class='potencijal-item'><span>• Контроль/ремиссия диабета:</span><span class='potencijal-val' style='color:#ff3366;'>+" + stetaDijab.toFixed(1) + " лет</span></div>";
+ if (stetaSrce > 0) potencijalHtmlV2 += "<div class='potencijal-item'><span>• Стабилизация кардио-статуса:</span><span class='potencijal-val' style='color:#ff3366;'>+" + stetaSrce.toFixed(1) + " лет</span></div>";
+ if (stetaAlk > 0) potencijalHtmlV2 += "<div class='potencijal-item'><span>• Снижение потребления алкоголя:</span><span class='potencijal-val' style='color:#ff3366;'>+" + stetaAlk.toFixed(1) + " лет</span></div>";
+ 
+ potencijalHtmlV2 += "<div style='margin-top: 10px; margin-bottom: 8px; font-weight: bold; color: #ffcc00;'>Сценарий 2: С текущим экспериментальным приемом (Прибавка в годах):</div>";
+ if (stetaPusnja > 0) potencijalHtmlV2 += "<div class='potencijal-item'><span>• Отказ от курения с текущим йодом:</span><span class='potencijal-val' style='color:#ffcc00;'>+" + (stetaPusnja * khu2).toFixed(1) + " лет</span></div>";
+ if (stetaGojaznost > 0) potencijalHtmlV2 += "<div class='potencijal-item'><span>• Регуляция массы с текущим йодом:</span><span class='potencijal-val' style='color:#ffcc00;'>+" + (stetaGojaznost * khu2).toFixed(1) + " лет</span></div>";
+ 
+ potencijalHtmlV2 += "<div style='margin-top: 10px; margin-bottom: 8px; font-weight: bold; color: #00ffcc;'>Сценарий 3: С ПОЛНОЙ галогенной защитой (Максимально возможное возвращение):</div>";
+ if (stetaPusnja > 0) potencijalHtmlV2 += "<div class='potencijal-item'><span>• Отказ от курения с полной защитой йода:</span><span class='potencijal-val' style='color:#00ffcc;'>+" + (stetaPusnja * khut).toFixed(1) + " лет</span></div>";
+ if (stetaGojaznost > 0) potencijalHtmlV2 += "<div class='potencijal-item'><span>• Регуляция массы с полной защитой йода:</span><span class='potencijal-val' style='color:#00ffcc;'>+" + (stetaGojaznost * khut).toFixed(1) + " лет</span></div>";
+ } else {
+ potencijalHtmlV2 = "<div style='color:#00ffcc; font-size:13px;'>✓ Тканевое пространство исключительно чистое. Факторы хронической нагрузки отсутствуют!</div>";
+ }
+ document.getElementById('out-potencijal-lista-v2').innerHTML = potencijalHtmlV2;
+ 
+ var presuda = "Ваш ИМТ (BMI) составляет <strong>" + bmi.toFixed(1) + "</strong>. Для достижения максимального технологического плато функционального срока жизни рекомендуются следующие коррекции:<br>";
+ var saveti = [];
+ if (n > 15) {
+ saveti.push("<br><strong>- Инженерное примечание о сатурации (насыщении):</strong> Хотя система проектирует оптимальный штурмовой объем в " + n + " капель для текущего долга, на практике рекомендуется постепенное насыщение. Стремитесь к половинной дозе через часовой протокол в течение длительного инженерного периода для формирования стабильного йодолипидного щита, а после сатурации перейдите на режим поддержания с меньшим количеством капель ради безопасности и разгрузки фильтров тела (почек).");
+ }
+ if (razlikaMase > 0) {
+ saveti.push("<br><strong>- Рекомендуется снижение массы тела:</strong> Снизить примерно на <strong>" + razlikaMase + " кг</strong> для немедленной разгрузки сердечно-сосудистой системы и повышения напряжения на клеточных мембранах. Для лиц с избыточным весом одновременно со снижением крайне желательна легкая прогулка каждый день продолжительностью от 15 до 30 минут!");
+ }
+ if (d === "maksimalno") {
+ var prognozaPusacBezJoda = v1.toFixed(1); 
+ var khut_sim = 6.6667;
+ var odnos2 = n > 0 ? (2 / n) : 0; if(odnos2 > 1) odnos2 = 1;
+ var khu2_sim = 1 + (khut_sim - 1) * odnos2;
+ var pz3_sim = (vn - v) * khu2_sim; if(pz3_sim < 0) pz3_sim = 0;
+ var v3_2KapiPusacPrognoza = v + (pz3_sim * (1 + -0.22)); 
+ 
+ saveti.push("<br><strong>- Предупреждение для курильщиков:</strong> Если вы бросите курить прямо сейчас, вы увеличите срок своей жизни на <strong>" + stetaPusnja.toFixed(1) + "</strong> лет (без йода в комбинациях). Однако, если вы решите продолжать курить, всего при 2 каплях ежедневного приема йода (раствора Люголя по Протоколу Лободы) ваш прогноз нелинейно возрастает с <strong>" + prognozaPusacBezJoda + "</strong> до <strong>" + v3_2KapiPusacPrognoza.toFixed(1) + "</strong> лет, что полностью нейтрализует и аннулирует разрушительное воздействие токсинов сигаретного дыма!");
+ }
+ if (v >= 65) {
+ saveti.push("<br><strong>- Biophysical примечание для лиц старше 65 лет:</strong> После 65 лет наибольший и наибыстрейший эффект на продление функционального срока жизни оказывают строгий контроль существующих хронических заболеваний, сохранение двигательной активности и отказ от курения.");
+ }
+ var najteziFaktorIme = "Нет (Исключительный баланс)";
+ var najteziFaktorVrednost = 0;
+ var tfaktori = [
+ { ime: "Активное курение", steta: stetaPusnja },
+ { ime: "Диабет 2-го типа", steta: stetaDijab },
+ { ime: "Выраженное ожирение", steta: stetaGojaznost },
+ { ime: "Сердечное заболевание", steta: stetaSrce },
+ { ime: "Болезнь почек", steta: stetaBubr },
+ { ime: "Потребление алкоголя", steta: stetaAlk }
+ ];
+ tfaktori.forEach(function(f) {
+ if (f.steta > najteziFaktorVrednost) {
+ najteziFaktorVrednost = f.steta;
+ najteziFaktorIme = f.ime;
+ }
+ });
+ if (najteziFaktorVrednost > 0) {
+ saveti.push("<br><strong>- Главный фактор нагрузки на организм:</strong> Основным похитителем ваших электронов и самым тяжелым фактором нагрузки на данный момент является <strong>" + najteziFaktorIme + "</strong>. Сосредоточив внимание на решении этой точки, вы совершите наибольший биофизический скачок в долголетии.");
+ }
+ if(saveti.length > 0) {
+ presuda += saveti.join("");
+ } else {
+ presuda += "<br><strong>- Статус тканей:</strong> Ваше тканевое пространство исключительно чистое! Поддержание стабильного диэлектрического напряжения клеток на уровне -70 мВ обеспечивает максимальную работу хромосомных часов долголетия.";
+ }
+ document.getElementById('out-presuda').innerHTML = presuda;
+ document.getElementById('prikaz').style.display = 'block';
+}
+</script>
+</body>
+</html>
