@@ -360,10 +360,12 @@ Human cells do not age solely due to the passive flow of time; they are driven i
 <p style="font-style: italic; color: #00ffcc; border-top: 1px solid #1e293b; padding-top: 15px; font-weight: bold; font-family: monospace; text-align: center; margin-top: 25px;">
 <span class="mat">THE INGENIOUS REVERSE: To stop this structural roulette, the system must transform from an open vessel into a secured, closed loop. By wrapping the reactive halogen core inside a protective lipid-lecithin matrix, we neutralize the oxidative ROS stress at its source, driving the toxic MDA production to zero.</span>
 </p>
+  
 <div style="display: flex; justify-content: flex-end; margin-top: 25px;">
 <button onclick="shareStory2()">📢 Share Story 2</button>
 </div>
 </div>
+  
 <!-- SPECIAL STORY 1 -->
 <div class="podfascikla">
 <div class="datum">SPECIAL STORY 1</div>
@@ -378,8 +380,10 @@ From a strict engineering and cellular biophysics perspective, human life is gov
 <button onclick="shareStory1()">📢 Share Story 1</button>
 </div>
 </div>
+  
 </div> <!-- KRAJ STORIES COLUMN -->
 </div> <!-- KRAJ CONTAINER-a -->
+  
 <script>
 // 1. СТАРА ДУГМАД (Story 1 до 12): Да не бисте преправљали тренутни код, ово их држи у животу
 function shareStory12() { shareEngine('Story 12', 'The Halogen Armour Revolution'); }
@@ -397,7 +401,7 @@ function shareStory1()  { shareEngine('Special Story 1', 'The Clock of Destiny a
 
 // 2. ГЛАВНИ СИСТЕМ: Ваша фиксна и сигурна путања
 function shareEngine(title, text) {
-    const targetUrl = 'https://github.io';
+    const targetUrl = 'https://draganloboda.github.io/index.html';
     if (navigator.share) {
         navigator.share({ title: 'Protokol Loboda - ' + title, text: text, url: targetUrl }).catch(function(){});
     } else {
